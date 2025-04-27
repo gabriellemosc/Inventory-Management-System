@@ -5,16 +5,20 @@ O usuario vai cadastrar produtos da sua empresa e CIA, em nosso software.
 MODELS:
 
     PRODUTO EM ESTOQUE TERÁ:
-        CATEGORIA:
+        CATEGORIA:  
         SUBCATEGORIA
         PRODUTO:
-        CÓDIGO:
+        CÓDIGO:     #gerar codigo unico
         QUANTIDADE: 
         DATA DE ULTIMA ATUALIZACAO:
         DATA DE CRIACAO:
-        ITEM DISPONIVEL?
+        ITEM DISPONIVEL?    MENOR QUE 0 > NAO DISPONIVEL
         DESCRICAO:
 
+
+USUARIO:
+    VALIDAR EMAIL
+    CASO JÁ EXISTA UM EMAIL REGISTRADO, NAO DEIXAR O USUARIO ACESSAR
 
 
 
