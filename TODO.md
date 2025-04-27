@@ -16,14 +16,6 @@ MODELS:
         DESCRICAO:
 
 
-    USUARIO:
-        NOME:
-        EMAIL:
-        SENHA:
-        DATA DE CRIACAO(USUARIO):
-        ULTIMO LOGIN:
-        TIPO USUARIO(ADMIN, USER):
-
 
 
 
