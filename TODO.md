@@ -18,6 +18,10 @@ MODELS:
 
 USUARIO:
     
+
+CRIAR PRODUTO:
+    Apos criar produto redirecionar para lista de produtos daquele determinada pasta:
+    
  
 
 
