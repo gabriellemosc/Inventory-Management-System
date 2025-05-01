@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect       #render give a html page as response, redirect make the user goes to other URL
-from .forms import ItemForm
+from .forms import ItemForm, CategoryForm
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -15,6 +16,24 @@ def create_product(request):
     else:
         form = ItemForm()       
 
-    return render(request, 'inventory/create_product.html',{"form":form})
+    return render(request, 'inventory/Create_Product/create_product.html',{"form":form})   #send the object to the form
+
+
+def create_category(request):
+    next_url = request.GET.get('next', '/')     #take the URL to save to redirect where the user was
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            #redirect to the previous page
+            return redirect(next_url)
+    else:
+            form = CategoryForm()
+
+    return render(request, 'inventory/Create_Product/create_category.html', {"form":form})
+
+
+def create_subcategory(request):
+    return render(request, 'inventory/Create_Product/create_subcategory.html')
 
 

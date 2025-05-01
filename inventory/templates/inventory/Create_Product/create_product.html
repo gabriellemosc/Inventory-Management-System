@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Criar Produto HTML  </h2>
+    <form method="POST" enctype="multipart/form-data" id="product-form">  
+        {% csrf_token %}
+        
+        <p>
+            {{ form.name.label_tag }} <br>
+            {{ form.name}}
+        </p>
+
+        <p>
+            {{ form.category.label_tag }}<br>
+            {{ form.category }}
+            <a href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()">Cadastrar nova categoria</a>
+        </p>
+
+        <p>
+            {{ form.subcategory.label_tag }} <br>
+            {{ form.subcategory }}
+            <a href="{% url 'create_subcategory' %} onclick="saveFormData()">+ Nova Subcategoria </a>
+        </p>
+
+        <p>
+            {{ form.price.label_tag }}<br>
+            {{ form.price }}
+        </p>
+
+        <p>
+            {{ form.quantity.label_tag }}<br>
+            {{ form.quantity }}
+        </p>
+
+        <p>
+            {{ form.description.label_tag }}<br>
+            {{ form.description }}
+        </p>
+
+        <p>
+            {{ form.avaible.label_tag }}<br>
+            {{ form.avaible }}
+        </p>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <script>
+        function saveFormData(){
+            const form = document.getElementById('product-form');
+            const formData = new FormData(form);
+            const formEntries = {};
+            for (const [key,value] of formData.entries()){
+                formEntries[key] = value;
+            }
+            localStorage.setItem('productFormData', JSON.stringify(formEntries));
+        }
+        //when the pages load, repopulate the form
+        window.onload = function(){
+            const saveData = localStorage.getItem('productFormData');
+            if (saveData){
+                const formEntries = JSON.parse(saveData);
+                for (const key in formEntries){
+                    const field = document.querySelector(`[name="${key}"]`);
+                    if (field && field.type != "file"){
+                        field.value = formEntries[key];
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>
