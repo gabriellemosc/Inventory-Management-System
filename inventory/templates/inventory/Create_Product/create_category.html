@@ -10,13 +10,13 @@
 
     <form method="POST">
         {% csrf_token %}  
-
         <p>
             {{ form.category.label_tag }} <br>
             {{ form.category}}
         </p>
-
         <button type="submit">Adicionar Categoria</button>
+
     </form>
+    
 </body>
 </html>

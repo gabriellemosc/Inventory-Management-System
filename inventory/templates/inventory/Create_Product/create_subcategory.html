@@ -6,6 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>create_subcategory</h1>
+    <h1>Create subcategory</h1>
+    <form method="POST">
+        {% csrf_token %} 
+        {{form.category}}
+        <p>
+            {{form.subcategory.label_tag}} <br>
+            {{form.subcategory}}
+        </p>
+        <button type="submit">Adicionar Categoria</button>
+    </form>
 </body>
 </html>
