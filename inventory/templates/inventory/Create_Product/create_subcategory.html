@@ -9,11 +9,7 @@
     <h1>Create subcategory</h1>
     <form method="POST">
         {% csrf_token %} 
-        {{form.category}}
-        <p>
-            {{form.subcategory.label_tag}} <br>
-            {{form.subcategory}}
-        </p>
+        {{ form.as_p }}
         <button type="submit">Adicionar Categoria</button>
     </form>
 </body>

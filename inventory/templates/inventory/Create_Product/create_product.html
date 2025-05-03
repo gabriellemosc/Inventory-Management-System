@@ -18,13 +18,13 @@
         <p>
             {{ form.category.label_tag }}<br>
             {{ form.category }}
-            <a href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()">Cadastrar nova categoria</a>
+            <a  href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()">Cadastrar nova categoria</a>
         </p>
 
         <p>
             {{ form.subcategory.label_tag }} <br>
             {{ form.subcategory }}
-            <a href="{% url 'create_subcategory' %} onclick="saveFormData()">+ Nova Subcategoria </a>
+            <a id="new-subcategory-link" href="{% url 'create_subcategory' %}?next={{ request.path }}&category_id={{ form.category.value }} onclick="saveFormData()">+ Nova Subcategoria </a>
         </p>
 
         <p>
@@ -71,8 +71,28 @@
                         field.value = formEntries[key];
                     }
                 }
+            }   
+        }
+
+        //update the link of subcategory based on category
+        const categoriaSelect = document.getElementById("id_category");
+        const subcatLink = document.getElementById("new-subcategory-link");
+
+        function UpdateHref(){
+            const selectedId = categoriaSelect.value;
+            const baseHref = "{% url 'create_subcategory' %}";
+            const next = "{{ request.path }}"
+
+            if (selectedId){
+                subcatLink.href = `${baseHref}?category_id=${selectedId}&next=${encodeURIComponent(next)}`;
+            }else{
+                subcatLink.href = `${baseHref}?next=${encodeURIComponent(next)}`;
             }
-        };
+        }
+
+        categoriaSelect.addEventListener("change", UpdateHref);
+        UpdateHref();
+
     </script>
 </body>
 </html>

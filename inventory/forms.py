@@ -1,7 +1,7 @@
 #forms that all the request from user
 from django import forms
 from .models import Item    #impor the struct from our table fro DB
-from .models import Category
+from .models import Category, SubCategory
 
 #creating a new form
 class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
@@ -14,3 +14,9 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['category']       #the only field to complete
+
+
+class SubCategoryForm(forms.ModelForm):
+    class Meta:
+        model = SubCategory
+        fields = ['category','subcategory']     #fields to complete

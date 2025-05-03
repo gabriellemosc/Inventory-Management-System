@@ -8,19 +8,19 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
     return render(request, 'inventory/homepage.html')
 
 def create_product(request):
-    if request.method == 'POST':
-        form = ItemForm(request.POST)   #send to the function in Forms
+    if request.method == 'POST':        #check if was a POST
+        form = ItemForm(request.POST)   #IF yes, takes the parameter by the USER CREATE A FORM AND SAVE ON DB 
         if form.is_valid():
             form.save()
             return redirect('homepage')
-    else:
-        form = ItemForm()       
+    else:                               #if was A GET e not a post
+        form = ItemForm()               #create the form
 
     return render(request, 'inventory/Create_Product/create_product.html',{"form":form})   #send the object to the form
 
 
 def create_category(request):
-    next_url = request.GET.get('next', '/')     #take the URL to save to redirect where the user was
+    next_url = request.GET.get('next', '/')     #take the URL, beside next to save to redirect where the user was
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
@@ -35,6 +35,8 @@ def create_category(request):
 
 def create_subcategory(request):
     next_url = request.GET.get('next', '/')
+    category_id  = request.GET.get('category_id')
+
     if request.method == 'POST':
         form = SubCategoryForm(request.POST)
         if form.is_valid():
@@ -42,7 +44,10 @@ def create_subcategory(request):
             #redirect previous page
             return redirect(next_url)
     else:
-        form = SubCategoryForm()
+        inital_data = {}
+        if category_id:
+            inital_data['category'] = category_id
+        form = SubCategoryForm(initial=inital_data)     #pass the DATAS already to the form as context
 
     return render(request, 'inventory/Create_Product/create_subcategory.html', {"form":form})
 
