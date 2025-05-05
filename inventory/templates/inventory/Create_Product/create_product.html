@@ -9,6 +9,11 @@
     <h2>Criar Produto HTML  </h2>
     <form method="POST" enctype="multipart/form-data" id="product-form">  
         {% csrf_token %}
+
+        <p>
+            {{form.images.label_tag}}
+            {{ form.images }}
+        </p>
         
         <p>
             {{ form.name.label_tag }} <br>
@@ -62,16 +67,24 @@
         }
         //when the pages load, repopulate the form
         window.onload = function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasCategoryId = urlParams.has('category_id');
+            const hasSubcategoryId = urlParams.has('subcategory_id');
+
             const saveData = localStorage.getItem('productFormData');
-            if (saveData){
+            if (saveData && !hasCategoryId && !hasSubcategoryId){
                 const formEntries = JSON.parse(saveData);
                 for (const key in formEntries){
                     const field = document.querySelector(`[name="${key}"]`);
-                    if (field && field.type != "file"){
+                    if (field && field.type != "file" && !field.value){
                         field.value = formEntries[key];
                     }
                 }
             }   
+            //if we have the subcategory & category ID send for the user erase the save
+            if(hasCategoryId || hasSubcategoryId){
+                localStorage.removeItem('productFormData')
+            }
         }
 
         //update the link of subcategory based on category
