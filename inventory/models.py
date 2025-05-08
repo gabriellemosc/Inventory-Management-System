@@ -43,19 +43,19 @@ class SubCategory(models.Model):
          verbose_name_plural = "Sub Categories"
              
         def __str__(self):
-             return f"{self.category.category} - {self.subcategory}"
+             return f"{self.subcategory}"
         
 
 class Item(models.Model):
      code = models.CharField(max_length=7, unique=True, editable=False)   
      category = models.ForeignKey(Category, on_delete=models.CASCADE)
      subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
-     name = models.CharField(max_length=40, null=False, blank=False, default="Nome Produto")
+     name = models.CharField(max_length=40, null=False, blank=False)
      price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
      description = models.CharField(max_length=250)
      quantity = models.IntegerField(validators=[MinValueValidator(0)])  #the quantity can be less tha one
      avaible = models.BooleanField(default=True)
-     images = models.ImageField(upload_to='product_images/', null=False, blank=False, default='default_images.png')
+     images = models.ImageField(upload_to='product_images/', null=True, blank=True, default='default_images.png')
  
      def save(self, *args, **kwargs):
          if not self.code:
