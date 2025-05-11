@@ -1,3 +1,5 @@
+{% load static %}   
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,8 +31,13 @@
         <p>
             {{ form.subcategory.label_tag }} <br>
             {{ form.subcategory }}
-            <a id="new-subcategory-link" href="{% url 'create_subcategory' %}?next={{ request.path }}&category_id={{ form.category.value }} onclick="saveFormData()">+ Nova Subcategoria </a>
-        </p>
+            <a id="new-subcategory-link"
+            href="{% url 'create_subcategory' %}?next={{ request.path }}&category_id={{ form.category.value }}" 
+            data-base="{% url 'create_subcategory' %}"
+            data-next="{{ request.path }}"
+            onclick="saveFormData()">
+           + Nova Subcategoria</a>       
+         </p>
 
         <p>
             {{ form.price.label_tag }}<br>
@@ -55,57 +62,6 @@
         <button type="submit">Salvar</button>
     </form>
 
-    <script>
-        function saveFormData(){
-            const form = document.getElementById('product-form');
-            const formData = new FormData(form);
-            const formEntries = {};
-            for (const [key,value] of formData.entries()){
-                formEntries[key] = value;
-            }
-            localStorage.setItem('productFormData', JSON.stringify(formEntries));
-        }
-        //when the pages load, repopulate the form
-        window.onload = function(){
-            const urlParams = new URLSearchParams(window.location.search);
-            const hasCategoryId = urlParams.has('category_id');
-            const hasSubcategoryId = urlParams.has('subcategory_id');
-
-            const saveData = localStorage.getItem('productFormData');
-            if (saveData && !hasCategoryId && !hasSubcategoryId){
-                const formEntries = JSON.parse(saveData);
-                for (const key in formEntries){
-                    const field = document.querySelector(`[name="${key}"]`);
-                    if (field && field.type != "file" && !field.value){
-                        field.value = formEntries[key];
-                    }
-                }
-            }   
-            //if we have the subcategory & category ID send for the user erase the save
-            if(hasCategoryId || hasSubcategoryId){
-                localStorage.removeItem('productFormData')
-            }
-        }
-
-        //update the link of subcategory based on category
-        const categoriaSelect = document.getElementById("id_category");
-        const subcatLink = document.getElementById("new-subcategory-link");
-
-        function UpdateHref(){
-            const selectedId = categoriaSelect.value;
-            const baseHref = "{% url 'create_subcategory' %}";
-            const next = "{{ request.path }}"
-
-            if (selectedId){
-                subcatLink.href = `${baseHref}?category_id=${selectedId}&next=${encodeURIComponent(next)}`;
-            }else{
-                subcatLink.href = `${baseHref}?next=${encodeURIComponent(next)}`;
-            }
-        }
-
-        categoriaSelect.addEventListener("change", UpdateHref);
-        UpdateHref();
-
-    </script>
+    <script src="{% static 'inventory/js/create_product.js' %}"></script>
 </body>
 </html>

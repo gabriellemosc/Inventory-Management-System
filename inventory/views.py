@@ -12,7 +12,7 @@ def create_product(request):
     #when the user register a new subcategory we get to the form
     category_id = request.GET.get('category_id')
     subcategory_id = request.GET.get('subcategory_id')
-
+    
     inital_data = {}
 #if the user already register, we try to get 
     if category_id:
@@ -25,7 +25,7 @@ def create_product(request):
             try:
                 inital_data['subcategory'] = SubCategory.objects.get(id=subcategory_id)  
             except SubCategory.DoesNotExist:
-                pass             
+                pass          
 
     if request.method == 'POST':        #check if was a POST
         form = ItemForm(request.POST, request.FILES)   #IF yes, takes the parameter by the USER CREATE A FORM AND SAVE ON DB 
