@@ -9,56 +9,59 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
         model = Item        #we say to use the model item to buidl
         fields = ['images','name', 'category', 'subcategory','quantity', 'price','description', 'avaible']  #field to show on form
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Nome do Produto'}),
+            'name': forms.TextInput(attrs={
+                                            'placeholder': 'Nome do Produto',
+                                            'required': False
+                                            }),
             'quantity': forms.TextInput(attrs={'placeholder': 'Quantidade em Estoque'}),
             'description': forms.TextInput(attrs={'placeholder': 'Breve Descrição do Produto'})
         }
 
-    def clean_nome(self):
+    def clean_name(self):
         name = self.cleaned_data.get('name')
 
         if not name:
-            print("Campo Nome Obrigatorio")
             raise forms.ValidationError("Campo nome do produto obrigatório")
         return name
 
+    def clean_category(self):
+        category = self.cleaned_data.get('category')
+
+        if not category:
+            raise forms.ValidationError("CATEGORIA NÃO PODE SER VAZIA")
+        return category
 
     def clean_price(self):
         price = self.cleaned_data.get('price')  #take the price
         if price is None:
-            print("Preco Obrigatorio")
             raise forms.ValidationError("O preço é obrigatório")
         if price <= 0:
-            print("Preco deve ser maior que 0")
-            raise forms.ValidationError("o preço deve ser maior que ")
+            raise forms.ValidationError("O PREÇO DEVE SER MAIOR QUE 0 0")
         return price
 
     def clean_quantity(self):
         quantity = self.cleaned_data.get('quantity')
         if quantity < 0:
-            print("Quantidade nao pode ser menor que  0")
-            forms.ValidationError("Quantidade não pode ser menor que 0")
+            raise forms.ValidationError("QUANTIDADE NÃO PODE SER MENOR QUE 0")
         if quantity is None:
-            print("Quantidade obrigatoria")
-            forms.ValidationError("Quantidade Obrigatória")
+            raise forms.ValidationError("Quantidade Obrigatória")
         return quantity
     
     def clean_images(self):
-        images = self.cleaned_data.get('images')
+        image = self.cleaned_data.get('images')
 
-        if images:
-            tamanho_maximo = 5 * 1024 * 1024  # 5MB to the image bytes
-            if images.size > tamanho_maximo:
-                print("Tamanho maximo permitido de 5MB")
-                raise forms.ValidationError("Tamanho máximo permitido de 5 MB")
-        return images
+        if image and hasattr(image, 'size'):                #check if its a image
+            max_size = 5 * 1024 * 1024  # 5MB to the image bytes
+            if image.size > max_size:
+                raise forms.ValidationError("TAMANHO MÁXIMO PERMITIDO DE 5 MB")
+        return image
 
     def clean_description(self):
         description = self.cleaned_data.get('description')
 
         if description:
             if len(description) >= 250: 
-                raise forms.ValidationError("Descrição deve ter menos de 250 caracteres")
+                raise forms.ValidationError("DESCRIÇÃO DEVE TER MENOS DE 250 CARACTERES")
         
         return description
 

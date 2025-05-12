@@ -1,5 +1,7 @@
 const STORAGE_KEY = 'productFormData';
 
+
+
 function saveFormData() {
   const form = document.getElementById('product-form');
   const data = {};

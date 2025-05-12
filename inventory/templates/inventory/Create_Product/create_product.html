@@ -15,16 +15,34 @@
         <p>
             {{form.images.label_tag}}
             {{ form.images }}
+
+            {% if form.images.errors %}
+
+                 <span style="color: red;">{{ form.images.errors.0 }}</span>
+             {% endif %}
+
         </p>
         
         <p>
             {{ form.name.label_tag }} <br>
             {{ form.name}}
+
+            {% if form.name.errors %}
+
+                <span style="color: red;">{{ form.name.errors.0 }}</span>
+            {% endif %}
         </p>
 
         <p>
             {{ form.category.label_tag }}<br>
             {{ form.category }}
+
+            {% if form.category.errors %}
+
+            <span style="color: red;">{{ form.category.errors.0 }}</span>
+        {% endif %}
+
+            
             <a  href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()">Cadastrar nova categoria</a>
         </p>
 
@@ -42,16 +60,29 @@
         <p>
             {{ form.price.label_tag }}<br>
             {{ form.price }}
+
+            {% if form.price.errors %}
+                <span style="color: red;">{{ form.price.errors.0 }} </span>
+            {% endif %}
         </p>
 
         <p>
             {{ form.quantity.label_tag }}<br>
             {{ form.quantity }}
+
+            {% if form.quantity.errors %}
+                <span style="color: red;"> {{ form.quantity.errors.0 }} </span>
+            {% endif %}
         </p>
 
         <p>
             {{ form.description.label_tag }}<br>
             {{ form.description }}
+
+
+            {% if form.description.errors %}
+                <span style="color: red;"> {{ form.description.errors.0 }} </span>
+            {% endif %}
         </p>
 
         <p>
