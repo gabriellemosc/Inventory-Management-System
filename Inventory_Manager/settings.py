@@ -132,3 +132,6 @@ AUTH_USER_MODEL = 'inventory.User'
 MEDIA_URL= '/media/'        #the directory on root project
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+#CONFIGURE THE REDIRECT TO LOGIN
+LOGIN_URL = 'login_view'

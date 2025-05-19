@@ -1,13 +1,33 @@
 from django.shortcuts import render, redirect       #render give a html page as response, redirect make the user goes to other URL
-from .forms import ItemForm, CategoryForm, SubCategoryForm
+from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm
 from django.shortcuts import redirect
 from .models import Category, SubCategory
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def homepage(request):  #after the urls.py direct to here, the function decide what to make. If shows or save what the user maked
     return render(request, 'inventory/homepage.html')
 
+def login_view(request):
+     if request.method == 'POST':
+          form = LoginForm(data=request.POST)
+          if form.is_valid():
+               #auth and make login
+               user = form.get_user()
+               login(request, user)
+               return redirect('homepage')
+     else:
+            form = LoginForm()
+     return render(request, 'inventory/User/login.html',{"form":form})
+
+def logout_view(request):
+     logout(request)
+     return redirect('login')
+
+@login_required
 def create_product(request):
     #when the user register a new subcategory we get to the form
     category_id = request.GET.get('category_id')
@@ -38,7 +58,7 @@ def create_product(request):
 
     return render(request, 'inventory/Create_Product/create_product.html',{"form":form})   #send the object to the form
 
-
+@login_required
 def create_category(request):
     next_url = request.GET.get('next', '/')     #take the URL, beside next to save to redirect where the user was
 
@@ -54,7 +74,7 @@ def create_category(request):
 
     return render(request, 'inventory/Create_Product/create_category.html', {"form":form})
 
-
+@login_required
 def create_subcategory(request):
     next_url = request.GET.get('next', '/')         #take the previous path
     category_id  = request.GET.get('category_id')
