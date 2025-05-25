@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect       #render give a html page as response, redirect make the user goes to other URL
-from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm
+from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm, Item
 from django.shortcuts import redirect
 from .models import Category, SubCategory
 from django.contrib.auth import login, logout, authenticate
@@ -9,7 +9,14 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def homepage(request):  #after the urls.py direct to here, the function decide what to make. If shows or save what the user maked
-    return render(request, 'inventory/homepage.html')
+
+    #filter products by user
+    itens = Item.objects.filter(user=request.user)
+
+    print(f"Usuario {request.user}")
+    for item in itens:
+         print(item.name)
+    return render(request, 'inventory/homepage.html', {'itens':itens})
 
 def login_view(request):
      if request.method == 'POST':
@@ -50,7 +57,10 @@ def create_product(request):
     if request.method == 'POST':        #check if was a POST
         form = ItemForm(request.POST, request.FILES)   #IF yes, takes the parameter by the USER CREATE A FORM AND SAVE ON DB 
         if form.is_valid():
-            form.save()
+            #link product with user
+            product  = form.save(commit=False)
+            product.user = request.user 
+            product.save()
             return redirect('homepage')
     else:     
         #when the user register subcategory, we already take 

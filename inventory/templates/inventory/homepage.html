@@ -1,18 +1,26 @@
-<!-- templates/homepage.html -->
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Minha Home</title>
-</head>
-<body>
+{% extends "inventory/base.html" %}
 
-    
+{% block title %}Minha Home{% endblock %}
+
+{% block content %}
     <h1>Bem-vindo ao Sistema de Estoque</h1>
     <p>Gerencie seus produtos com facilidade!</p>
 
+    <h2>Seus Produtos Cadastrados</h2>
 
-    {% extends "inventory/navbar.html" %}
-    
-</body>
-</html>
+    {% if itens %}
+        <ul>
+            {% for item in itens %}
+                <li>
+                    <strong>{{ item.name }}</strong><br>
+                    Preço: R$ {{ item.price }} <br>
+                    Estoque: {{ item.quantity }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Você ainda não cadastrou nenhum produto.</p>
+    {% endif %}
+{% endblock %}
+
+

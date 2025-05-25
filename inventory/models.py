@@ -50,6 +50,7 @@ class Item(models.Model):
      code = models.CharField(max_length=7, unique=True, editable=False)   
      category = models.ForeignKey(Category, on_delete=models.CASCADE)
      subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+     user = models.ForeignKey(User, on_delete=models.CASCADE)
      name = models.CharField(max_length=40, null=False, blank=False)
      price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
      description = models.CharField(max_length=250)
