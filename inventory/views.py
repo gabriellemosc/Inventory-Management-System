@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from .models import Category, SubCategory
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 
@@ -17,6 +18,11 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
     for item in itens:
          print(item.name)
     return render(request, 'inventory/homepage.html', {'itens':itens})
+
+@login_required
+def item_details(request, pk):
+     item = get_object_or_404(Item, pk=pk, user=request.user)
+     return render(request, 'inventory/item_details.html', {'item': item})
 
 def login_view(request):
      if request.method == 'POST':

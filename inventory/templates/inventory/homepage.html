@@ -12,9 +12,11 @@
         <ul>
             {% for item in itens %}
                 <li>
-                    <strong>{{ item.name }}</strong><br>
-                    Preço: R$ {{ item.price }} <br>
-                    Estoque: {{ item.quantity }}
+                    <a href="{% url 'item_details' item.pk %}">
+                        <strong>{{ item.name }}</strong><br>
+                        Preço: R$ {{ item.price }} <br>
+                        Estoque: {{ item.quantity }}
+                    </a>
                 </li>
             {% endfor %}
         </ul>
@@ -22,5 +24,3 @@
         <p>Você ainda não cadastrou nenhum produto.</p>
     {% endif %}
 {% endblock %}
-
-
