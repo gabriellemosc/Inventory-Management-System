@@ -1,0 +1,24 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+
+{% block title %}Detalhes de {{ item.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/item_details.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="details-container">
+        <h1>{{ item.name }}</h1>
+        <p><strong>Preço:</strong> R$ {{ item.price }}</p>
+        <p><strong>Estoque:</strong> {{ item.quantity }}</p>
+        <p><strong>Descrição:</strong> {{ item.description }}</p>
+        <p><strong>Categoria:</strong> {{ item.category }}</p>
+        <p><strong>Subcategoria:</strong> {{ item.subcategory }}</p>
+        <p><strong>Disponível:</strong> {{ item.avaible|yesno:"Sim,Não" }}</p>
+        <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
+
+        <a href="{% url 'homepage' %}" class="back-link">← Voltar para a lista</a>
+    </div>
+
+{% endblock %}

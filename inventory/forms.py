@@ -19,6 +19,7 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
     class Meta: #model to use to buld the form
         model = Item        #we say to use the model item to buidl
         fields = ['images','name', 'category', 'subcategory','quantity', 'price','description', 'avaible']  #field to show on form
+        exclude = ['user'] #remove user from the form
         widgets = {
             'name': forms.TextInput(attrs={
                                             'placeholder': 'Nome do Produto',

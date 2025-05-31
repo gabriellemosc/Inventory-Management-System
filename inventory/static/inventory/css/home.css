@@ -1,0 +1,116 @@
+/* home.css */
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f7f8fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.homepage-wrapper {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+    margin-left: 200px; /* compensa a navbar lateral */
+    box-sizing: border-box;
+}
+
+.homepage-wrapper h1 {
+    font-size: 1.8rem;
+    color: #0e1116;
+    margin-bottom: 0.25rem;
+}
+
+.homepage-wrapper h2 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    color: #1e2228;
+}
+
+.homepage-wrapper .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.5rem 0 1rem 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.filter-btn {
+    background-color: #e9ecf2;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.filter-btn:hover {
+    background-color: #dce0ea;
+}
+
+.filter-btn.active {
+    background-color: #3366cc;
+    color: white;
+}
+
+.homepage-wrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.homepage-wrapper li {
+    background-color: white;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.homepage-wrapper li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.homepage-wrapper a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.homepage-wrapper a:hover strong {
+    color: #3366cc;
+}
+
+.homepage-wrapper strong {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.homepage-wrapper p,
+.homepage-wrapper span {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.homepage-wrapper .empty-message {
+    font-style: italic;
+    text-align: center;
+    color: #777;
+    margin-top: 2rem;
+}
+
+.product-image {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}

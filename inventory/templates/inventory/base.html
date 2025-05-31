@@ -1,0 +1,50 @@
+    {% load static %}
+
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>SmartStock</title>
+        <link rel="stylesheet" href="{% static 'inventory/css/navbar.css' %}">
+
+        {% block extra_head %}{% endblock %}
+        {% block extra_css %}{% endblock %}
+    </head>
+   <body>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="/">
+                    <img src="{% static 'inventory/icons/homepage.svg' %}" alt="Início">
+                    Início
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Produtos">
+                    Produtos
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'inventory/icons/login.svg' %}" alt="Login">
+                    Login
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'create_product' %}" class="btn">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Criar Produto">
+                    Criar Produto
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+
+    </html>

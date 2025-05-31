@@ -1,0 +1,88 @@
+/* inventory/static/inventory/css/item_details.css */
+
+/* Container para centralizar e dar estilo à área dos detalhes */
+
+body {
+    margin-left: 200px; /* para não colidir com navbar lateral */
+    background-color: #f7f8fa;
+    font-family: 'Inter', sans-serif;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    text-align: center;  /* Centraliza o texto */
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título principal */
+h1 {
+    color: #2c3e50;
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 8px;
+}
+
+/* Parágrafos para os detalhes */
+p {
+    font-size: 1.6rem;
+    color: #4a5568;
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+/* Destaque para os rótulos fortes */
+p strong {
+    color: #2c3e50;
+}
+
+/* Imagem do produto */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    margin: 25px 0;
+}
+
+/* Link Voltar estilizado como botão */
+a.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 22px;
+    background-color: #2980b9;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+a.back-link:hover {
+    background-color: #1c5980;
+}
+
+/* Para telas pequenas */
+@media (max-width: 480px) {
+    .details-container {
+        padding: 20px 15px;
+        margin: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}

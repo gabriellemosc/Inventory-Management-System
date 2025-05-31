@@ -1,18 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Criar Subcategoria</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/create_subcategory.css' %}" />
 </head>
 <body>
-    <h1>Create subcategory</h1>
-    <form method="POST">
-        {% csrf_token %} 
-        {{ form.as_p }}
+    <div class="subcategory-form-container">
+        <h1>Criar Subcategoria</h1>
 
-        <a href=""> <button type="submit">Adicionar Categoria</button> </a>
-       
-    </form>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="submit-btn">Adicionar Subcategoria</button>
+        </form>
+    </div>
 </body>
 </html>

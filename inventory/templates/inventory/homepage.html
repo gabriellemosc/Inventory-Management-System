@@ -1,26 +1,43 @@
 {% extends "inventory/base.html" %}
+{% load static %}
 
 {% block title %}Minha Home{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/home.css' %}">
+{% endblock %}
+
 {% block content %}
+<div class="homepage-wrapper">
+
     <h1>Bem-vindo ao Sistema de Estoque</h1>
     <p>Gerencie seus produtos com facilidade!</p>
 
     <h2>Seus Produtos Cadastrados</h2>
 
+    <div class="filter-bar">
+        <button class="filter-btn active">Todos</button>
+        <button class="filter-btn">Eletrônicos</button>
+        <button class="filter-btn">Roupas</button>
+        <button class="filter-btn">Alimentos</button>
+    </div>
+
     {% if itens %}
         <ul>
             {% for item in itens %}
-                <li>
-                    <a href="{% url 'item_details' item.pk %}">
-                        <strong>{{ item.name }}</strong><br>
-                        Preço: R$ {{ item.price }} <br>
-                        Estoque: {{ item.quantity }}
-                    </a>
-                </li>
+            <li>
+                <a href="{% url 'item_details' item.pk %}">
+                    <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
+            
+                    <strong>{{ item.name }}</strong>
+                    Preço: R$ {{ item.price }} <br>
+                    Estoque: {{ item.quantity }}
+                </a>
+            </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>Você ainda não cadastrou nenhum produto.</p>
+        <p class="empty-message">Você ainda não cadastrou nenhum produto.</p>
     {% endif %}
+</div>
 {% endblock %}

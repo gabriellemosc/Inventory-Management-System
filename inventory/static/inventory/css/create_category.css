@@ -1,0 +1,83 @@
+/* Container centralizado com sombra e borda arredondada */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.category-form-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+/* Título */
+.category-form-container h1 {
+    margin-bottom: 25px;
+    color: #007bff;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-align: center;
+    letter-spacing: 0.04em;
+}
+
+/* Label estilizado */
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Campo input */
+input[type="text"], select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Botão estilizado */
+button[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 5px 12px rgba(0,123,255,0.4);
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 15px rgba(0,86,179,0.6);
+}
+
+/* Mensagem de erro */
+.error {
+    margin-top: 8px;
+    color: #d93025;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
