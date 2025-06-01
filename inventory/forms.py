@@ -3,6 +3,7 @@ from django import forms
 from .models import Item    #impor the struct from our table fro DB
 from .models import Category, SubCategory
 from .models import User
+from .models import StockMovement
 from django.contrib.auth.forms import AuthenticationForm
 
 #LOGIN FORM
@@ -78,8 +79,44 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
         
         return description
 
+class StockMovement(forms.ModelForm):
+    class Meta:
+        model = StockMovement
+        fields = ['item', 'tipo', 'quantidade', 'observacao']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        quantidade = cleaned_data.get('quantidade')
+        tipo = cleaned_data.get('tipo')
+        item = cleaned_data.get('item')
+
+        if tipo == 'S' and item and quantidade:
+            if item.quantity < quantidade:
+                raise forms.ValidationError("Estoque insuficiente para realizar essa saída")
+        
+        return cleaned_data
+    
+    
+    def save(self, commit=True):
+            movimento = super().save(commit=False)
+            quantidade = self.cleaned_data.get['quantidade']
+            tipo = self.cleaned_data.get['tipo']
+            item = self.cleaned_data.get['item']
+
+            if tipo == 'E' and item and quantidade:
+                item.quantity += quantidade
+            elif tipo == 'S' and item.quantity and quantidade:
+                item.quantity -= quantidade
+            
+            if commit:
+                item.save()
+                movimento.save()
+
+            return movimento
 
 
+
+        
 #SEPARETE PAGES TO CATEGORY AND SUBCATEGORY
 class CategoryForm(forms.ModelForm):
     class Meta:

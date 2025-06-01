@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser #management the user
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 import uuid
-
+from django.utils import timezone
 
 # Create your models here.
 
@@ -53,7 +53,7 @@ class Item(models.Model):
      user = models.ForeignKey(User, on_delete=models.CASCADE)
      name = models.CharField(max_length=40, null=False, blank=False)
      price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
-     description = models.CharField(max_length=250)
+     description = models.TextField(max_length=250)
      quantity = models.IntegerField(validators=[MinValueValidator(0)])  #the quantity can be less tha one
      avaible = models.BooleanField(default=True)
      images = models.ImageField(upload_to='product_images/', null=True, blank=True, default='default_images.png')
@@ -63,10 +63,27 @@ class Item(models.Model):
             self.code = self.make_unique_code()
          super().save(*args, **kwargs)
       
-     def make_unique_code(self):
+     def make_unique_code(self):    
         #make a unique UUID and taje the 7 first caracters
         code = uuid.uuid4().hex.upper()   #hex to get a compact string
         return code[:7] #return 7 caracters to add to the product code
      
      def __str__(self):
          return str(self.name)
+     
+
+class StockMovement(models.Model):
+    ENTRADA = 'E'
+    SAIDA = 'S'
+    TIPO_MOVIMENTO  = [
+        (ENTRADA, 'Entrada'),
+        (SAIDA, 'Saída'),
+    ]
+
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=1, choices=TIPO_MOVIMENTO)
+    quantidade = models.IntegerField()
+    data = models.DateTimeField(default=timezone.now)
+    observacao = models.TextField(blank=True)
+
+  
