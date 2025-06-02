@@ -18,6 +18,10 @@
         <p><strong>Disponível:</strong> {{ item.avaible|yesno:"Sim,Não" }}</p>
         <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
 
+        <hr>
+
+        <h3>Estoque Atual <strong> {{ item.quantity }} </strong></h3>
+            <a href="{% url 'move_stock' item.pk %}" class="btn-movimentar">Movimentar Estoque</a>
         <a href="{% url 'homepage' %}" class="back-link">← Voltar para a lista</a>
     </div>
 
