@@ -79,13 +79,13 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
         
         return description
 
-class StockMovement(forms.ModelForm):
+class StockMovementForm(forms.ModelForm):
     class Meta:
         model = StockMovement
         fields = ['item', 'tipo', 'quantidade', 'observacao']
 
     def clean(self):
-        cleaned_data = super().clean()
+        cleaned_data = super().clean()  
         quantidade = cleaned_data.get('quantidade')
         tipo = cleaned_data.get('tipo')
         item = cleaned_data.get('item')
@@ -99,7 +99,7 @@ class StockMovement(forms.ModelForm):
     
     def save(self, commit=True):
             movimento = super().save(commit=False)
-            quantidade = self.cleaned_data.get['quantidade']
+            quantidade = self.cleaned_data.get('quantidade')
             tipo = self.cleaned_data.get['tipo']
             item = self.cleaned_data.get['item']
 
