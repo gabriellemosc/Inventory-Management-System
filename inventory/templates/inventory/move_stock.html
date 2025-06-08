@@ -16,11 +16,22 @@
             <h2 class="item-name">{{ item.name }}</h2>
             <p class="item-quantity">Estoque atual: <strong>{{ item.quantity }}</strong></p>
 
+            {% if not request.GET.tipo %}
+                 <p style="color: red; font-weight: bold;">⚠️ Por favor, escolha o tipo de movimentação: <u>Entrada</u> ou <u>Saída</u>.</p>
+            {% endif %}
+
             <div class="stock-buttons">
                 <a href="{% url 'move_stock' item.pk %}?tipo=E" class="btn btn-add">&#x2795; Entrada</a>
                 <a href="{% url 'move_stock' item.pk %}?tipo=S" class="btn btn-remove">&#x2796; Saída</a>
             </div>
-        </div>
+
+            <form method="POST" class="stock-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-confirm">  ✅ Confirmar</button>
+            </form>
+
+        </div>  
     </div>
 </body>
 </html>

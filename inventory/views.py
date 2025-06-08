@@ -5,6 +5,7 @@ from .models import Category, SubCategory
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 
 # Create your views here.
 
@@ -114,17 +115,23 @@ def create_subcategory(request):
 
 @login_required
 def move_stock(request, pk):
+    if not pk:
+         raise Http404("Item não especificado")
+    
     item = get_object_or_404(Item, pk=pk, user=request.user)  if pk else None
-    tipo_predefinido = request.GET.get('tipo')
-
-
+    tipo = request.GET.get('tipo')
+         
     if request.method == 'POST':
           form = StockMovementForm(request.POST)
           if form.is_valid():
                form.save()
                return redirect('item_details', pk=pk)
     else:
-        form = StockMovementForm(initial={'item': item, 'tipo_predefinido': tipo_predefinido})
-        print(tipo_predefinido)
+        inital_data = {'item': item }
+        if tipo:
+             inital_data['tipo'] = tipo
+
+        form = StockMovementForm(initial=inital_data, user=request.user)
+        print(tipo)
 
     return render(request,'inventory/move_stock.html', {'form': form, 'item': item})
