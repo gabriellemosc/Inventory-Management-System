@@ -132,6 +132,5 @@ def move_stock(request, pk):
              inital_data['tipo'] = tipo
 
         form = StockMovementForm(initial=inital_data, user=request.user)
-        print(tipo)
 
     return render(request,'inventory/move_stock.html', {'form': form, 'item': item})

@@ -1,7 +1,7 @@
 #forms that all the request from user
 from django import forms
 from .models import Item    #impor the struct from our table fro DB
-from .models import Category, SubCategory
+from .models import Category, SubCategory, Item
 from .models import User
 from .models import StockMovement
 from django.contrib.auth.forms import AuthenticationForm
@@ -80,15 +80,34 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
         return description
 
 class StockMovementForm(forms.ModelForm):
+    def __init__(self,*args, user=None ,**kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+
+        #hide field
+        self.fields['item'].widget = forms.HiddenInput()
+        self.fields['tipo'].widget = forms.HiddenInput()
+
+
     class Meta:
         model = StockMovement
         fields = ['item', 'tipo', 'quantidade', 'observacao']
+        labels = {
+            'observacao': 'Observação',
+        }
 
     def clean(self):
         cleaned_data = super().clean()  
         quantidade = cleaned_data.get('quantidade')
         tipo = cleaned_data.get('tipo')
         item = cleaned_data.get('item')
+
+        if item and self.user and item.user != self.user:
+            raise forms.ValidationError("Você não tem permissão para movimentar esse item")
+        
+        if quantidade > 100000:
+            raise forms.ValidationError("Valor não suportado")
 
         if tipo == 'S' and item and quantidade:
             if item.quantity < quantidade:
@@ -100,12 +119,12 @@ class StockMovementForm(forms.ModelForm):
     def save(self, commit=True):
             movimento = super().save(commit=False)
             quantidade = self.cleaned_data.get('quantidade')
-            tipo = self.cleaned_data.get['tipo']
-            item = self.cleaned_data.get['item']
+            tipo = self.cleaned_data.get('tipo')
+            item = self.cleaned_data.get('item')
 
-            if tipo == 'E' and item and quantidade:
+            if tipo == 'E':
                 item.quantity += quantidade
-            elif tipo == 'S' and item.quantity and quantidade:
+            elif tipo == 'S':
                 item.quantity -= quantidade
             
             if commit:
@@ -114,9 +133,6 @@ class StockMovementForm(forms.ModelForm):
 
             return movimento
 
-
-
-        
 #SEPARETE PAGES TO CATEGORY AND SUBCATEGORY
 class CategoryForm(forms.ModelForm):
     class Meta:

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 import uuid
 from django.utils import timezone
+from django.utils.timezone import localtime
 
 # Create your models here.
 
@@ -83,7 +84,13 @@ class StockMovement(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=TIPO_MOVIMENTO)
     quantidade = models.IntegerField()
-    data = models.DateTimeField(default=timezone.now)
+    data = models.DateTimeField (default=timezone.now)
     observacao = models.TextField(blank=True)
+
+    def __str__(self):
+        data_local = localtime(self.data)
+        data_formatada = data_local.strftime('%d/%m/%Y %H:%M')
+        tipo_str = dict(self.TIPO_MOVIMENTO).get(self.tipo, "DESCONHECIDO")
+        return str(f"{self.item} - {tipo_str.upper()} - {self.quantidade} - EM {data_formatada}")
 
   
