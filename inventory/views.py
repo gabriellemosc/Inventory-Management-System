@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
+from django.db.models import F
 
 # Create your views here.
 
@@ -15,9 +16,6 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
     #filter products by user
     itens = Item.objects.filter(user=request.user)
 
-    print(f"Usuario {request.user}")
-    for item in itens:
-         print(item.name)
     return render(request, 'inventory/homepage.html', {'itens':itens})
 
 @login_required
@@ -134,3 +132,14 @@ def move_stock(request, pk):
         form = StockMovementForm(initial=inital_data, user=request.user)
 
     return render(request,'inventory/move_stock.html', {'form': form, 'item': item})
+
+
+@login_required
+def minimun_stock(request):
+     produtos_com_estoque_baixo = Item.objects.filter(user=request.user, quantity__lt=10)        #compare with the field minimum stock
+     print(produtos_com_estoque_baixo)
+
+     for p in produtos_com_estoque_baixo:
+        print(f"{p.name} - Quantidade {p.quantity} - Minimo {p.minimum_stock}")
+    
+     return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})

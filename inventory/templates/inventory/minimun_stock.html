@@ -1,0 +1,52 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque Mínimo</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/minimun_stock.css' %}">
+</head>
+<body>
+
+   
+    <div class="container">
+        <h2 class="titulo">📦 Produtos com Estoque Mínimo</h2>
+    
+        {% if produtos_com_estoque_baixo %}
+
+            <div class="linha-horizontal" id="carrossel">
+                {% for produto in produtos_com_estoque_baixo %}
+                    <!-- seus produtos -->
+                    <div class="produto-card">
+                        <div class="info">
+                            <strong>{{ produto.name }}</strong>
+                            <p>Estoque: <span class="qtd">{{ produto.quantity }}</span></p>
+                            <p>Mínimo: <span class="min">{{ produto.minimum_stock }}</span></p>
+                            <p class="preco">R$ {{ produto.price }}</p>
+                        </div>
+                        {% if produto.images %}
+                            <img src="{{ produto.images.url }}" alt="{{ produto.name }}">
+                        {% else %}
+                            <img src="{% static 'img/default.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Botões de navegação (opcional) -->
+            <div class="carrossel-nav">
+                <button onclick="document.getElementById('carrossel').scrollBy(-300, 0)">&#x25C0;</button>
+                <button onclick="document.getElementById('carrossel').scrollBy(300, 0)">&#x25B6;</button>
+            </div>
+            {% else %}
+            <p class="sem-produto">Todos os produtos estão com estoque adequado.</p>
+
+            {% endif %}
+    </div>
+
+</body>
+</html>
+
