@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.db.models import F
-
+from inventory.context_processors import estoque_minimo
 # Create your views here.
 
 @login_required
@@ -137,9 +137,7 @@ def move_stock(request, pk):
 @login_required
 def minimun_stock(request):
      produtos_com_estoque_baixo = Item.objects.filter(user=request.user, quantity__lt=10)        #compare with the field minimum stock
-     print(produtos_com_estoque_baixo)
-
-     for p in produtos_com_estoque_baixo:
-        print(f"{p.name} - Quantidade {p.quantity} - Minimo {p.minimum_stock}")
-    
+   
      return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})
+
+

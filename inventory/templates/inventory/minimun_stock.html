@@ -20,7 +20,9 @@
             <div class="linha-horizontal" id="carrossel">
                 {% for produto in produtos_com_estoque_baixo %}
                     <!-- seus produtos -->
+                     <a href="{% url 'item_details' produto.pk %}"> 
                     <div class="produto-card">
+                        
                         <div class="info">
                             <strong>{{ produto.name }}</strong>
                             <p>Estoque: <span class="qtd">{{ produto.quantity }}</span></p>
@@ -28,10 +30,12 @@
                             <p class="preco">R$ {{ produto.price }}</p>
                         </div>
                         {% if produto.images %}
+                        
                             <img src="{{ produto.images.url }}" alt="{{ produto.name }}">
                         {% else %}
                             <img src="{% static 'img/default.png' %}" alt="Sem imagem">
                         {% endif %}
+                    </a>    
                     </div>
                 {% endfor %}
             </div>

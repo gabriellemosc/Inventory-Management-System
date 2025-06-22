@@ -69,6 +69,10 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'inventory.context_processors.estoque_minimo',
+]
+
 WSGI_APPLICATION = 'Inventory_Manager.wsgi.application'
 
 
