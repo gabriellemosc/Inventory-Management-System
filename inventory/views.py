@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect       #render give a html page as response, redirect make the user goes to other URL
 from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm, Item, StockMovementForm
 from django.shortcuts import redirect
-from .models import Category, SubCategory
+from .models import Category, SubCategory, StockMovement
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
@@ -140,4 +140,11 @@ def minimun_stock(request):
    
      return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})
 
+@login_required
+def stock_movement_report(request):
+    itens_movimentados = StockMovement.objects.filter(user=request.user)
+
+    #for item_movimentado in itens_movimentados:
+     #   print(f"Item {item_movimentado.item.name} - Quantidade {item_movimentado.quantidade} - FROM {item_movimentado.user.email} e {item_movimentado.images}")
+    return render(request,'inventory/stock_movement_report.html', {'itens_movimentados': itens_movimentados, })
 

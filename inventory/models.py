@@ -55,6 +55,7 @@ class Item(models.Model):
      name = models.CharField(max_length=40, null=False, blank=False)
      price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, default=0.00)
      description = models.TextField(max_length=250)
+     minimum_stock = models.IntegerField(default=10)
      quantity = models.IntegerField(validators=[MinValueValidator(0)])  #the quantity can be less tha one
      avaible = models.BooleanField(default=True)
      images = models.ImageField(upload_to='product_images/', null=True, blank=True, default='default_images.png')
@@ -81,16 +82,21 @@ class StockMovement(models.Model):
         (SAIDA, 'Saída'),
     ]
 
+    #data sem microsegundos
+    def now_no_microsecunds(self):
+        return timezone.now().replace(microsecond=0)
+
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=TIPO_MOVIMENTO)
     quantidade = models.IntegerField()
-    data = models.DateTimeField (default=timezone.now)
+    data = models.DateTimeField(default=now_no_microsecunds)  #not have the microsegunds
     observacao = models.TextField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         data_local = localtime(self.data)
         data_formatada = data_local.strftime('%d/%m/%Y %H:%M')
         tipo_str = dict(self.TIPO_MOVIMENTO).get(self.tipo, "DESCONHECIDO")
-        return str(f"{self.item} - {tipo_str.upper()} - {self.quantidade} - EM {data_formatada}")
+        return str(f"{self.item} - {tipo_str.upper()} - {self.quantidade} - EM {data_formatada} FROM {self.user}")
 
   
