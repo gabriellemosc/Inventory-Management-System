@@ -118,21 +118,40 @@ class StockMovementForm(forms.ModelForm):
     
     def save(self, commit=True):
             movimento = super().save(commit=False)
+            movimento.user = self.user
             quantidade = self.cleaned_data.get('quantidade')
             tipo = self.cleaned_data.get('tipo')
             item = self.cleaned_data.get('item')
 
-            if tipo == 'E':
-                item.quantity += quantidade
-            elif tipo == 'S':
-                item.quantity -= quantidade
-            
+
+
+            if not movimento.pk:        #novo movimento em estoque
+                movimento.quantidade_antes = item.quantity  #save quantity before movimentation
+
+                if tipo == 'E':
+                    item.quantity += quantidade
+                elif tipo == 'S':
+                    item.quantity -= quantidade
+                
+                if commit:
+                    item.save()
+
             if commit:
-                item.save()
-                movimento.save()
+                    movimento.save()
 
             return movimento
+    
+#allow user edit the products
 
+class ItemEditForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['category', 'subcategory', 'name', 'price', 'description', 'images']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['images'].required = False 
+        
 #SEPARETE PAGES TO CATEGORY AND SUBCATEGORY
 class CategoryForm(forms.ModelForm):
     class Meta:

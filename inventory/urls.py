@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import homepage, create_product, create_category,create_subcategory, login_view, logout_view, item_details, move_stock,minimun_stock, stock_movement_report
+from .views import homepage, create_product, create_category,create_subcategory, login_view, logout_view, item_details, move_stock,minimun_stock, stock_movement_report, edit_product
 
 #we need to add to the root urls too
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('move_stock/<int:pk>/', move_stock, name='move_stock'),
     path('minimun_stock', minimun_stock, name='minimun_stock'),
     path('stock_movement_report', stock_movement_report, name='stock_movement_report'),
+    path('edit_product/<int:pk>/', edit_product, name='edit_product'),
 
 ]
 

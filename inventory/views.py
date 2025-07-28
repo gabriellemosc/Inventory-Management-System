@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect       #render give a html page as response, redirect make the user goes to other URL
-from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm, Item, StockMovementForm
+from .forms import ItemForm, CategoryForm, SubCategoryForm, LoginForm, Item, StockMovementForm, ItemEditForm
 from django.shortcuts import redirect
 from .models import Category, SubCategory, StockMovement
 from django.contrib.auth import login, logout, authenticate
@@ -120,7 +120,7 @@ def move_stock(request, pk):
     tipo = request.GET.get('tipo')
          
     if request.method == 'POST':
-          form = StockMovementForm(request.POST)
+          form = StockMovementForm(request.POST, user=request.user)
           if form.is_valid():
                form.save()
                return redirect('item_details', pk=pk)
@@ -142,9 +142,22 @@ def minimun_stock(request):
 
 @login_required
 def stock_movement_report(request):
-    itens_movimentados = StockMovement.objects.filter(user=request.user)
+    itens_movimentados = StockMovement.objects.filter(user=request.user).order_by('-data')  #from newest to the oldest
 
     #for item_movimentado in itens_movimentados:
      #   print(f"Item {item_movimentado.item.name} - Quantidade {item_movimentado.quantidade} - FROM {item_movimentado.user.email} e {item_movimentado.images}")
     return render(request,'inventory/stock_movement_report.html', {'itens_movimentados': itens_movimentados, })
 
+
+@login_required
+def edit_product(request, pk):
+     if not pk:
+          raise Http404("Item não especificado para a edição")
+
+     item = get_object_or_404(Item, pk=pk, user=request.user) if pk else None
+     form = ItemEditForm()
+
+ #    if request.method == 'POST':
+  #      pass   
+     
+     return render(request, 'inventory/edit_product.html', {'form': form})

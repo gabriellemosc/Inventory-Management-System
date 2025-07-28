@@ -21,8 +21,19 @@
         <hr>
 
         <h3>Estoque Atual <strong> {{ item.quantity }} </strong></h3>
-            <a href="{% url 'move_stock' item.pk %}" class="btn-movimentar">Movimentar Estoque</a>
-        <a href="{% url 'homepage' %}" class="back-link">← Voltar para a lista</a>
+<a href="{% url 'move_stock' item.pk %}" 
+   style="display: inline-block; padding: 0.6rem 1.2rem; background-color: #2563eb; color: white; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background-color 0.3s ease;"
+   onmouseover="this.style.backgroundColor='#1d4ed8'"
+   onmouseout="this.style.backgroundColor='#2563eb'">
+   🔄 Movimentar Estoque
+</a>   
+
+
+<a href="{% url 'homepage' %}" class="back-link">← Voltar para a lista</a>
+
+
+
+<a href="{% url 'edit_product' item.pk %}"> Editar Produto </a>
     </div>
 
 {% endblock %}
