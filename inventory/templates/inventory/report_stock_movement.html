@@ -1,0 +1,49 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/report_stock_movement.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <h1>Relatório de Movimentações {{ request.user.name }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    {% endif %}
+
+    {% if movimentacoes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Item</th>
+                    <th>Tipo</th>
+                    <th>Quantidade</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mov in movimentacoes %}
+                    <tr>
+                        <td data-label="Data">{{ mov.data|date:"d/m/Y H:i" }}</td>
+                        <td data-label="Item">{{ mov.item.name }}</td>
+                        <td data-label="Tipo">
+                            {% if mov.tipo == "E" %}Entrada{% else %}Saída{% endif %}
+                        </td>
+                        <td data-label="Quantidade">{{ mov.quantidade }}</td>
+                        <td data-label="Observação">{{ mov.observacao }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Nenhuma movimentação encontrada.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

@@ -151,6 +151,22 @@ class ItemEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['images'].required = False 
+
+
+    def clean_name(self):
+        novo_nome = self.cleaned_data.get('name')
+
+        if not novo_nome:
+            return self.instance.name
+        
+        novo_nome = novo_nome.strip().title()
+
+        if len(novo_nome) > 200:
+            raise ValueError("O nome do produto deve ter menos que 200 caracteres")
+        
+        return novo_nome
+    
+
         
 #SEPARETE PAGES TO CATEGORY AND SUBCATEGORY
 class CategoryForm(forms.ModelForm):

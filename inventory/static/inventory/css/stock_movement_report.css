@@ -85,3 +85,29 @@ body {
     color: #777;
     font-style: italic;
 }
+
+.btn-relatorio {
+    display: inline-block;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem; /* ✅ tamanho de fonte normal para botão */
+    text-decoration: none;
+    padding: 12px 24px;
+    margin-bottom: 20px; /* ✅ dá espaço entre o botão e a lista */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-relatorio:hover {
+    background: linear-gradient(135deg, #0056b3, #004099);
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.btn-relatorio:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

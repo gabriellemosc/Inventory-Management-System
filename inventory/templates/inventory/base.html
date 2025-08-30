@@ -32,12 +32,42 @@
                     Login
                 </a>
             </li>
+
             <li>
                 <a href="{% url 'create_product' %}" class="btn">
                     <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Criar Produto">
                     Criar Produto
                 </a>
             </li>
+
+            <li>
+                <a href="{% url 'minimun_stock' %}" class="btn" style="position: relative; display: inline-flex; align-items: center;">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Estoque Minimo" style="margin-right: 5px;">
+                    Estoque Minimo
+                    {% if estoque_minimo_count > 0 %}
+                        <span style="
+                            background-color: rgb(151, 36, 36);
+                            color: white;
+                            border-radius: 50%;
+                            padding: 0.2em 0.6em;
+                            font-size: 0.8em;
+                            font-weight: bold;
+                            margin-left: 6px;
+                            min-width: 20px;
+                            text-align: center;
+                            display: inline-block;
+                        " class="badge">{{ estoque_minimo_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'stock_movement_report' %}" class="btn">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Relatório Estoque">
+                    Relatório de Movimentação de Estoque
+                </a>
+            </li>
+
         </ul>
     </nav>
 

@@ -1,54 +1,54 @@
+{% extends "inventory/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Estoque</title>
-    <link rel="stylesheet" href="{% static 'inventory/css/stock_movement_report.css' %}">
-</head>
-<body>
+{% block title %}Relatório de Estoque{% endblock %}
 
-    <div class="container">
-        <h2 class="titulo">📦 Relatório de Movimentação de Estoque</h2>
-        
-        {% if itens_movimentados %}
-            <ul class="movimentacoes-lista">
-                {% for item_movimentado in itens_movimentados %}
-                    <li class="movimentacao-item">
-                        <div class="imagem">
-                            {% if item_movimentado.item.images %}
-                                <img src="{{ item_movimentado.item.images.url }}" alt="{{ item_movimentado.item.name }}">
-                            {% else %}
-                                <img src="{% static 'img/default.png' %}" alt="Sem imagem">
-                            {% endif %}
-                        </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/stock_movement_report.css' %}">
+{% endblock %}
 
-                        <div class="detalhes">
-                            <h3 class="item-nome">{{ item_movimentado.item.name }}</h3>
-                            <p><strong>Data da Movimentação:</strong> {{ item_movimentado.data }}</p>
+{% block content %}
+<div class="container">
+    <h2 class="titulo">📦 Relatório de Movimentação de Estoque</h2>
 
-                            {% if item_movimentado.tipo == "E" %}
-                                <p><strong>Tipo:</strong> Entrada</p>
-                                <p><strong>Quantidade Adicionada:</strong> {{ item_movimentado.quantidade }}</p>
-                            {% elif item_movimentado.tipo == "S" %}
-                                <p><strong>Tipo:</strong> Saída</p>
-                                <p><strong>Quantidade Retirada:</strong> {{ item_movimentado.quantidade }}</p>
-                            {% else %}
-                                <p><strong>Tipo:</strong> Não registrado</p>
-                            {% endif %}
+    {% if itens_movimentados %}
+        <a href="{% url 'report_stock_movement' %}" class="btn-relatorio">
+            📊 Baixar Relatório
+        </a> 
+        <ul class="movimentacoes-lista">
+            {% for item_movimentado in itens_movimentados %}
+                <li class="movimentacao-item">
+                    <div class="imagem">
+                        {% if item_movimentado.item.images %}
+                            <img src="{{ item_movimentado.item.images.url }}" alt="{{ item_movimentado.item.name }}">
+                        {% else %}
+                            <img src="{% static 'img/default.png' %}" alt="Sem imagem">
+                        {% endif %}
+                    </div>
 
-                            <p><strong>Quantidade Atual em Estoque:</strong> {{ item_movimentado.item.quantity }}</p>
-                            <p><strong>Preço Unitário:</strong> R$ {{ item_movimentado.item.price }}</p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="sem-movimentacao">Nenhuma Movimentação de Estoque</p>
-        {% endif %}
-    </div>
+                    <div class="detalhes">
+                        <h3 class="item-nome">{{ item_movimentado.item.name }}</h3>
+                        <p><strong>Data da Movimentação:</strong> {{ item_movimentado.data }}</p>
 
-</body>
-</html>
+                        {% if item_movimentado.tipo == "E" %}
+                            <p><strong>Tipo:</strong> Entrada</p>
+                            <p><strong>Quantidade Adicionada:</strong> {{ item_movimentado.quantidade }}</p>
+                        {% elif item_movimentado.tipo == "S" %}
+                            <p><strong>Tipo:</strong> Saída</p>
+                            <p><strong>Quantidade Retirada:</strong> {{ item_movimentado.quantidade }}</p>
+                        {% else %}
+                            <p><strong>Tipo:</strong> Não registrado</p>
+                        {% endif %}
+
+                        <p><strong>Quantidade Atual em Estoque:</strong> {{ item_movimentado.item.quantity }}</p>
+                        <p><strong>Quantidade anterior em Estoque:</strong> {{ item_movimentado.quantidade_antes }}</p>
+                        <p><strong>Preço Unitário:</strong> R$ {{ item_movimentado.item.price }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="sem-movimentacao">Nenhuma Movimentação de Estoque</p>
+    {% endif %}
+</div>
+{% endblock %}

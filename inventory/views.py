@@ -8,6 +8,13 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.db.models import F
 from inventory.context_processors import estoque_minimo
+from reportlab.lib.pagesizes import A4 #generate the PDF
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas 
+from django.utils.timezone import localtime
+from django.db import DatabaseError
+from django.contrib import messages
+
 # Create your views here.
 
 @login_required
@@ -161,3 +168,59 @@ def edit_product(request, pk):
   #      pass   
      
      return render(request, 'inventory/edit_product.html', {'form': form})
+
+
+@login_required
+def report_stock_movement(request):
+     try:
+        movimentacoes = StockMovement.objects.filter(user=request.user).select_related("item").order_by("-data")
+        
+        if not movimentacoes.exists:
+             messages.info(request, "Você ainda não possui movimentações")
+     except DatabaseError as e:
+            print(f"Erro ao buscar movimentações {e}")
+            movimentacoes = []
+            messages.error(request, "Ocorreu um erro ao carregar as suas movimentações")            
+          
+     return render(request, 'inventory/report_stock_movement.html', {"movimentacoes" : movimentacoes})
+
+@login_required
+def generate_pdf(request):
+    #response HTTP saying is a PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report_stock.pdf'
+
+    #create object PDF
+    p = canvas.Canvas(response, pagesize=A4)
+    largura, altura = A4
+
+    #title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, altura - 50, "Relatório de Movimentação de Estoque")
+
+    #movimentacoes apenas do user logado
+    movimentacoes = StockMovement.objects.filter(user=request.user).select_related("item").order_by("-data")
+
+    #listagem
+    p.setFont("Helvetica", 12)
+    y = altura - 100
+
+
+    for mov in movimentacoes:
+         data_local = localtime(mov.data).strftime("%d/%m/%Y %H:%M")
+         tipo = dict(StockMovement.TIPO_MOVIMENTO).get(mov.tipo, "DESCONHECIDO")
+         linha = f"{data_local} - {mov.item.name} - {tipo} - {mov.quantidade}"
+
+         p.drawString(100, y, linha)
+         y -= 20
+
+         #se chegar no fim da pagina, cria nova
+         if y < 50:
+              p.showPage()
+              p.setFont("Helvetica", 12)
+              y = altura - 50
+
+    p.showPage()
+    p.save()
+
+    return response

@@ -6,6 +6,7 @@ import uuid
 from django.utils import timezone
 from django.utils.timezone import localtime
 
+
 # Create your models here.
 
 from django.db import models
@@ -82,21 +83,23 @@ class StockMovement(models.Model):
         (SAIDA, 'Saída'),
     ]
 
-    #data sem microsegundos
-    def now_no_microsecunds(self):
-        return timezone.now().replace(microsecond=0)
+    @staticmethod
+    def now_no_microseconds():
+         return timezone.now().replace(microsecond=0)
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=TIPO_MOVIMENTO)
     quantidade = models.IntegerField()
-    data = models.DateTimeField(default=now_no_microsecunds)  #not have the microsegunds
+    data = models.DateTimeField(default=now_no_microseconds)  #not have the microsegunds
     observacao = models.TextField(blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantidade_antes = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         data_local = localtime(self.data)
         data_formatada = data_local.strftime('%d/%m/%Y %H:%M')
         tipo_str = dict(self.TIPO_MOVIMENTO).get(self.tipo, "DESCONHECIDO")
+
         return str(f"{self.item} - {tipo_str.upper()} - {self.quantidade} - EM {data_formatada} FROM {self.user}")
 
   
