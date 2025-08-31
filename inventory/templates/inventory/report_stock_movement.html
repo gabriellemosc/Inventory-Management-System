@@ -10,19 +10,43 @@
     <h1>Relatório de Movimentações {{ request.user.name }}</h1>
 
     {% if messages %}
+    <ul class="messages">
         {% for message in messages %}
             <li>{{ message }}</li>
         {% endfor %}
+    </ul>
     {% endif %}
 
+     <!-- ===== FORMULÁRIO DE FILTROS ===== -->
+     <form method="get" class="filtros-form">
+        <label>Data Inicial: <input type="date" name="start_date" value="{{ request.GET.start_date }}"></label>
+        <label>Data Final: <input type="date" name="end_date" value="{{ request.GET.end_date }}"></label>
+
+        <label>Tipo:
+            <select name="tipo">
+                <option value="">Todos</option>
+                <option value="E" {% if request.GET.tipo == "E" %}selected{% endif %}>Entrada</option>
+                <option value="S" {% if request.GET.tipo == "S" %}selected{% endif %}>Saída</option>
+            </select>
+        </label>
+
+        <label>Quantidade mínima: <input type="number" name="quant_min" value="{{ request.GET.quant_min }}"></label>
+        <label>Quantidade máxima: <input type="number" name="quant_max" value="{{ request.GET.quant_max }}"></label>
+
+        <button type="submit">Filtrar</button>
+    </form>
+    
     {% if movimentacoes %}
+   
         <table>
             <thead>
                 <tr>
                     <th>Data</th>
                     <th>Item</th>
                     <th>Tipo</th>
-                    <th>Quantidade</th>
+                    <th class="col-numerica">Quantidade</th>
+                    <th class="col-numerica">Quantidade Antes</th>
+                    <th class="col-numerica">Quantidade Atual</th>
                     <th>Observação</th>
                 </tr>
             </thead>
@@ -34,7 +58,20 @@
                         <td data-label="Tipo">
                             {% if mov.tipo == "E" %}Entrada{% else %}Saída{% endif %}
                         </td>
-                        <td data-label="Quantidade">{{ mov.quantidade }}</td>
+
+                        <td class="col-numerica" data-label="Quantidade">
+                            {% if mov.tipo == "E" %}
+                                +{{ mov.quantidade }}
+                            {% else %} 
+                                -{{mov.quantidade}}
+                            {% endif %}</td>
+
+                        <td class="col-numerica" data-label="Quantidade Antes">
+
+                              {%if mov.quantidade_antes > 0 %} {{ mov.quantidade_antes }} {% else %} 0 {% endif %} </td>
+                        
+                        <td class="col-numerica" data-label="Quantidade Atual">{{ mov.item.quantity }}</td>
+
                         <td data-label="Observação">{{ mov.observacao }}</td>
                     </tr>
                 {% empty %}
@@ -44,6 +81,14 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+         <p class="sem-movimentacao">Nenhuma movimentação encontrada com os filtros aplicados.</p>
+    
     {% endif %}
+
+
+    <a href="{% url 'dowloand_report_pdf' %}?{{ request.GET.urlencode }}" class="btn-download-pdf">
+        📄 Baixar PDF
+    </a>
 </div>
 {% endblock %}

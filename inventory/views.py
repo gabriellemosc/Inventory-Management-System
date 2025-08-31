@@ -10,7 +10,9 @@ from django.db.models import F
 from inventory.context_processors import estoque_minimo
 from reportlab.lib.pagesizes import A4 #generate the PDF
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas 
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 from django.utils.timezone import localtime
 from django.db import DatabaseError
 from django.contrib import messages
@@ -174,6 +176,27 @@ def edit_product(request, pk):
 def report_stock_movement(request):
      try:
         movimentacoes = StockMovement.objects.filter(user=request.user).select_related("item").order_by("-data")
+
+        #apliy filters
+        start_date = request.GET.get("start_date")
+        end_date = request.GET.get("end_date")
+        tipo = request.GET.get("tipo")
+        quant_min = request.GET.get("quant_min")
+        quant_max = request.GET.get("quant_max")
+      
+        print()
+        if start_date:
+             movimentacoes = movimentacoes.filter(data__date__gte=start_date)
+        if end_date:
+             movimentacoes = movimentacoes.filter(data__date__lte=end_date)
+        if tipo in ["E", "S"]:
+             movimentacoes = movimentacoes.filter(tipo=tipo)
+        if quant_min:
+             movimentacoes = movimentacoes.filter(quantidade__gte=quant_min)
+        if quant_max:
+             movimentacoes = movimentacoes.filter(quantidade__lte=quant_max)
+
+
         
         if not movimentacoes.exists:
              messages.info(request, "Você ainda não possui movimentações")
@@ -185,42 +208,62 @@ def report_stock_movement(request):
      return render(request, 'inventory/report_stock_movement.html', {"movimentacoes" : movimentacoes})
 
 @login_required
-def generate_pdf(request):
+def dowloand_report_pdf(request):
+    movimentacoes = StockMovement.objects.filter(user=request.user)
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    tipo = request.GET.get('tipo')
+    quant_min = request.GET.get('quant_min')
+    quant_max = request.GET.get('quant_max')
+    
+    if start_date:
+        movimentacoes = movimentacoes.filter(data__gte=start_date)
+    if end_date:
+        movimentacoes = movimentacoes.filter(data__lte=end_date)
+    if tipo:
+        movimentacoes = movimentacoes.filter(tipo=tipo)
+    if quant_min:
+        movimentacoes = movimentacoes.filter(quantidade__gte=quant_min)
+    if quant_max:
+        movimentacoes = movimentacoes.filter(quantidade__lte=quant_max)
+
     #response HTTP saying is a PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="report_stock.pdf'
 
     #create object PDF
-    p = canvas.Canvas(response, pagesize=A4)
-    largura, altura = A4
+    doc = SimpleDocTemplate(response, pagesize=A4)
+    styles = getSampleStyleSheet()
 
-    #title
-    p.setFont("Helvetica-Bold", 16)
-    p.drawString(100, altura - 50, "Relatório de Movimentação de Estoque")
+    elementos = []
 
-    #movimentacoes apenas do user logado
-    movimentacoes = StockMovement.objects.filter(user=request.user).select_related("item").order_by("-data")
+    #title of report
+    elementos.append(Paragraph(f"Relatório de Movimentações - {request.user.username}", styles['Heading1']))
 
-    #listagem
-    p.setFont("Helvetica", 12)
-    y = altura - 100
-
-
+    #table with data
+    data = [["Data", "Item", "Tipo", "Quantidade", "Observação"]]
     for mov in movimentacoes:
-         data_local = localtime(mov.data).strftime("%d/%m/%Y %H:%M")
-         tipo = dict(StockMovement.TIPO_MOVIMENTO).get(mov.tipo, "DESCONHECIDO")
-         linha = f"{data_local} - {mov.item.name} - {tipo} - {mov.quantidade}"
+         data.append([
+              mov.data.strftime("%d/%m/%Y %H:%M"),
+              mov.item.name,
+              "Entrada" if mov.tipo == "E" else "Saída",
+              str(mov.quantidade),
+              mov.observacao or "-"
+         ])
 
-         p.drawString(100, y, linha)
-         y -= 20
+    tabela = Table(data, hAlign='LEFT')
+    tabela.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+    ]))     
 
-         #se chegar no fim da pagina, cria nova
-         if y < 50:
-              p.showPage()
-              p.setFont("Helvetica", 12)
-              y = altura - 50
+    elementos.append(tabela)
 
-    p.showPage()
-    p.save()
+    doc.build(elementos)
 
     return response
