@@ -11,11 +11,14 @@ from inventory.context_processors import estoque_minimo
 from reportlab.lib.pagesizes import A4 #generate the PDF
 from django.http import HttpResponse
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from django.utils.timezone import localtime
 from django.db import DatabaseError
 from django.contrib import messages
+from reportlab.lib.units import mm
+from reportlab.lib.styles import getSampleStyleSheet
+
 
 # Create your views here.
 
@@ -217,16 +220,24 @@ def dowloand_report_pdf(request):
     quant_min = request.GET.get('quant_min')
     quant_max = request.GET.get('quant_max')
     
+    filtros_aplicados = []
     if start_date:
         movimentacoes = movimentacoes.filter(data__gte=start_date)
+        filtros_aplicados.append(f"Data Inicial - {start_date}")
     if end_date:
         movimentacoes = movimentacoes.filter(data__lte=end_date)
+        filtros_aplicados.append(f"Data Final - {end_date}")
     if tipo:
         movimentacoes = movimentacoes.filter(tipo=tipo)
+        filtros_aplicados.append(f"Tipo de Movimentação - {tipo}")
     if quant_min:
         movimentacoes = movimentacoes.filter(quantidade__gte=quant_min)
+        filtros_aplicados.append(f"Quantidade Mínima - {quant_min}")
     if quant_max:
         movimentacoes = movimentacoes.filter(quantidade__lte=quant_max)
+        filtros_aplicados.append(f"Quantidade Máxima - {quant_max}")
+
+
 
     #response HTTP saying is a PDF
     response = HttpResponse(content_type='application/pdf')
@@ -237,31 +248,46 @@ def dowloand_report_pdf(request):
     styles = getSampleStyleSheet()
 
     elementos = []
-
+    print(filtros_aplicados)
     #title of report
     elementos.append(Paragraph(f"Relatório de Movimentações - {request.user.username}", styles['Heading1']))
+    
+    if filtros_aplicados:
+        elementos.append(Paragraph("Filtros Aplicados no Relatório"))
+        for filtro in filtros_aplicados:
+            elementos.append(Paragraph(filtro, styles["Normal"]))
+    
+    elementos.append(Spacer(1, 5*mm))
 
     #table with data
-    data = [["Data", "Item", "Tipo", "Quantidade", "Observação"]]
+    data = [["Data", "Item", "Tipo", "Quantidade", "Quantidade Antes", "Quantidade Atual"]]
     for mov in movimentacoes:
+         quantidade_antes = mov.quantidade_antes or 0
+         quantidade_atual = mov.item.quantity or 0
+
          data.append([
               mov.data.strftime("%d/%m/%Y %H:%M"),
               mov.item.name,
               "Entrada" if mov.tipo == "E" else "Saída",
               str(mov.quantidade),
-              mov.observacao or "-"
+              str(quantidade_antes if quantidade_antes > 0 else 0),
+              str(quantidade_atual if quantidade_atual > 0 else 0),
+            
          ])
 
-    tabela = Table(data, hAlign='LEFT')
-    tabela.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-    ]))     
+    tabela = Table(data, colWidths=[70,90,50,60,80,80,100])
 
+    tabela.setStyle(TableStyle([
+    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498DB")),
+    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+    ("ALIGN", (3, 1), (5, -1), "CENTER"),  # Centraliza colunas numéricas
+    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+    ("FONTSIZE", (0, 0), (-1, -1), 8),  # Fonte menor
+    ("BOTTOMPADDING", (0, 0), (-1, 0), 6),
+    ("GRID", (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+    
+    
     elementos.append(tabela)
 
     doc.build(elementos)
