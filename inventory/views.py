@@ -24,11 +24,46 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 @login_required
 def homepage(request):  #after the urls.py direct to here, the function decide what to make. If shows or save what the user maked
-
     #filter products by user
-    itens = Item.objects.filter(user=request.user)
+        itens = Item.objects.filter(user=request.user)
+        
+        preco_min = request.GET.get("preco_min")
+        preco_max = request.GET.get("preco_max")
+        estoque_min = request.GET.get("estoque_min")
+        categoria = request.GET.get("categoria")
+        subcategoria = request.GET.get("subcategoria")
+        disponivel = request.GET.get("disponivel")
 
-    return render(request, 'inventory/homepage.html', {'itens':itens})
+        if preco_min:
+            itens = itens.filter(price__gte=preco_min)
+        if preco_max:
+            itens = itens.filter(price__lte=preco_max)
+        if estoque_min:
+            itens = itens.filter(quantity__gte=estoque_min)
+        if categoria:
+            itens = itens.filter(category_id=categoria)
+        if subcategoria:
+             itens = itens.filter(subcategory_id=subcategoria)
+        if disponivel == "sim":
+            itens = itens.filter(quantity__gt=0)
+        elif disponivel == "nao":
+            itens = itens.filter(quantity=0)
+
+        if not itens.exists():
+             messages.warning(request, "Nenhum Produto encontrado com os filtros selecionados")
+
+        categorias = Category.objects.filter(id__in=Item.objects.filter(user=request.user).values("category")).distinct()
+
+        subcategorias = SubCategory.objects.filter(id__in=Item.objects.filter(user=request.user).values("subcategory")).distinct()
+
+      
+                   
+
+        return render(request, 'inventory/homepage.html', {
+            'itens':itens,
+            'categorias': categorias,
+            'subcategorias': subcategorias,
+            })
 
 @login_required
 def item_details(request, pk):
@@ -187,7 +222,6 @@ def report_stock_movement(request):
         quant_min = request.GET.get("quant_min")
         quant_max = request.GET.get("quant_max")
       
-        print()
         if start_date:
              movimentacoes = movimentacoes.filter(data__date__gte=start_date)
         if end_date:
@@ -201,7 +235,7 @@ def report_stock_movement(request):
 
 
         
-        if not movimentacoes.exists:
+        if not movimentacoes.exists():
              messages.info(request, "Você ainda não possui movimentações")
      except DatabaseError as e:
             print(f"Erro ao buscar movimentações {e}")

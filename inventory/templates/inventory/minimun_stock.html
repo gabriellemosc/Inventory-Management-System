@@ -1,16 +1,14 @@
+{% extends "inventory/base.html" %}
 {% load static %}
 
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque Mínimo</title>
-    <link rel="stylesheet" href="{% static 'inventory/css/minimun_stock.css' %}">
-</head>
-<body>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/minimun_stock.css' %}">
+{% endblock %}
 
+
+
+{% block content %}
    
     <div class="container">
         <h2 class="titulo">📦 Produtos com Estoque Mínimo</h2>
@@ -51,6 +49,6 @@
             {% endif %}
     </div>
 
-</body>
-</html>
+    {% endblock %}
+
 

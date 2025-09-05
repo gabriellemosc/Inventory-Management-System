@@ -10,11 +10,11 @@
     <h1>Relatório de Movimentações {{ request.user.name }}</h1>
 
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 
      <!-- ===== FORMULÁRIO DE FILTROS ===== -->
