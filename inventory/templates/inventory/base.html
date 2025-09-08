@@ -1,80 +1,70 @@
-    {% load static %}
+{% load static %}
 
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <title>SmartStock</title>
-        <link rel="stylesheet" href="{% static 'inventory/css/navbar.css' %}">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartStock</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/navbar.css' %}">
+    {% block extra_head %}{% endblock %}
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
 
-        {% block extra_head %}{% endblock %}
-        {% block extra_css %}{% endblock %}
-    </head>
-   <body>
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h1>📦 SmartStock</h1>
+        </div>
 
-    <nav>
-        <ul>
+        <ul class="sidebar-list">
             <li>
-                <a href="/">
-                    <img src="{% static 'inventory/icons/homepage.svg' %}" alt="Início">
-                    Início
+                <a href="/" class="sidebar-link {% if request.path == '/' %}active{% endif %}">
+                    <img src="{% static 'inventory/icons/homepage.svg' %}" alt="Início" class="sidebar-icon">
+                    <span>Início</span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Produtos">
-                    Produtos
+                <a href="#" class="sidebar-link">
+                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Produtos" class="sidebar-icon">
+                    <span>Produtos</span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <img src="{% static 'inventory/icons/login.svg' %}" alt="Login">
-                    Login
-                </a>
-            </li>
-
-            <li>
-                <a href="{% url 'create_product' %}" class="btn">
-                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Criar Produto">
-                    Criar Produto
+                <a href="#" class="sidebar-link">
+                    <img src="{% static 'inventory/icons/login.svg' %}" alt="Login" class="sidebar-icon">
+                    <span>Login</span>
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'minimun_stock' %}" class="btn" style="position: relative; display: inline-flex; align-items: center;">
-                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Estoque Minimo" style="margin-right: 5px;">
-                    Estoque Minimo
+                <a href="{% url 'create_product' %}" class="sidebar-button">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Criar Produto" class="sidebar-icon">
+                    <span>Criar Produto</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'minimun_stock' %}" class="sidebar-button">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Estoque Mínimo" class="sidebar-icon">
+                    <span>Estoque Mínimo</span>
                     {% if estoque_minimo_count > 0 %}
-                        <span style="
-                            background-color: rgb(151, 36, 36);
-                            color: white;
-                            border-radius: 50%;
-                            padding: 0.2em 0.6em;
-                            font-size: 0.8em;
-                            font-weight: bold;
-                            margin-left: 6px;
-                            min-width: 20px;
-                            text-align: center;
-                            display: inline-block;
-                        " class="badge">{{ estoque_minimo_count }}</span>
+                        <span class="sidebar-badge">{{ estoque_minimo_count }}</span>
                     {% endif %}
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'stock_movement_report' %}" class="btn">
-                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Relatório Estoque">
-                    Relatório de Movimentação de Estoque
+                <a href="{% url 'stock_movement_report' %}" class="sidebar-button">
+                    <img src="{% static 'inventory/icons/create_product.svg' %}" alt="Relatório Estoque" class="sidebar-icon">
+                    <span>Relatório</span>
                 </a>
             </li>
-
         </ul>
-    </nav>
+    </aside>
 
-    <main>
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 
 </body>
-
-    </html>
+</html>

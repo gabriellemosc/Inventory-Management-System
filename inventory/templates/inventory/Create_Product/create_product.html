@@ -1,74 +1,74 @@
-{% load static %}   
+{% extends "inventory/base.html" %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'inventory/css/create_product.css' %}">
-    {% endblock %}
-</head>
-<body>
-    <div class="form-container">
-        <h2 class="form-title">Criar Produto</h2>
-        <form method="POST" enctype="multipart/form-data" id="product-form">
-            {% csrf_token %}
-            
-            <div class="form-card image-upload">
-                <label for="id_images" class="image-upload-label">
-                    <span>📷 Adicionar uma imagem</span>
-                    {{ form.images }}
-                </label>
-            
-                {% if form.images.errors %}
-                    <div class="error">{{ form.images.errors.0 }}</div>
-                {% endif %}
-            </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/create_product.css' %}">
+{% endblock %}
 
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Criar Produto</h2>
 
-            <div class="form-card">
-                <label for="id_name" class="form-label">Nome do Produto</label>
-                {{ form.name }}
-                {% if form.name.errors %}
-                    <div class="error">{{ form.name.errors.0 }}</div>
-                {% endif %}
-          </div>
-
-
-           <div class="form-card">
-                <div class="form-label-wrapper">
-                    <label for="id_category" class="form-label">Categoria</label>
-                    <a href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()" class="form-link">+ Nova Categoria</a>
-                </div>
-                {{ form.category }}
-                {% if form.category.errors %}
-                    <div class="error">{{ form.category.errors.0 }}</div>
-                {% endif %}
+    <!-- Mensagens (opcional, caso use django.contrib.messages) -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
         </div>
+    {% endif %}
 
+    <form method="POST" enctype="multipart/form-data" id="product-form">
+        {% csrf_token %}
+
+        <div class="form-card image-upload">
+            <label for="id_images" class="image-upload-label">
+                <span>📷 Adicionar uma imagem</span>
+                {{ form.images }}
+            </label>
+            {% if form.images.errors %}
+                <div class="error">{{ form.images.errors.0 }}</div>
+            {% endif %}
+        </div>
 
         <div class="form-card">
-                <div class="form-label-wrapper">
-                    <label for="id_subcategory" class="form-label">Subcategoria</label>
-                    <a id="new-subcategory-link"
-                    href="{% url 'create_subcategory' %}?next={{ request.path }}&category_id={{ form.category.value }}"
-                    data-base="{% url 'create_subcategory' %}"
-                    data-next="{{ request.path }}"
-                    onclick="saveFormData()"
-                    class="form-link">
-                    + Nova Subcategoria
-                    </a>
-                </div>
-                {{ form.subcategory }}
-                {% if form.subcategory.errors %}
-                    <div class="error">{{ form.subcategory.errors.0 }}</div>
-                {% endif %}
+            <label for="id_name" class="form-label">Nome do Produto</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors.0 }}</div>
+            {% endif %}
         </div>
 
+        <div class="form-card">
+            <div class="form-label-wrapper">
+                <label for="id_category" class="form-label">Categoria</label>
+                <a href="{% url 'create_category' %}?next={{ request.path }}" onclick="saveFormData()" class="form-link">+ Nova Categoria</a>
+            </div>
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="error">{{ form.category.errors.0 }}</div>
+            {% endif %}
+        </div>
 
-                <div class="form-card">
+        <div class="form-card">
+            <div class="form-label-wrapper">
+                <label for="id_subcategory" class="form-label">Subcategoria</label>
+                <a id="new-subcategory-link"
+                   href="{% url 'create_subcategory' %}?next={{ request.path }}&category_id={{ form.category.value }}"
+                   data-base="{% url 'create_subcategory' %}"
+                   data-next="{{ request.path }}"
+                   onclick="saveFormData()"
+                   class="form-link">
+                   + Nova Subcategoria
+                </a>
+            </div>
+            {{ form.subcategory }}
+            {% if form.subcategory.errors %}
+                <div class="error">{{ form.subcategory.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-card">
             <label for="id_price" class="form-label">Preço</label>
             {{ form.price }}
             {% if form.price.errors %}
@@ -77,10 +77,18 @@
         </div>
 
         <div class="form-card">
-            <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+            <label for="{{ form.quantity.id_for_label }}">Quantidade</label>
             {{ form.quantity }}
             {% if form.quantity.errors %}
                 <div class="error">{{ form.quantity.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-card">
+            <label for="id_minimum_stock" class="form-label">Estoque Mínimo</label>
+            {{ form.minimum_stock }}
+            {% if form.minimum_stock.errors %}
+                <div class="error">{{ form.minimum_stock.errors.0 }}</div>
             {% endif %}
         </div>
         
@@ -92,7 +100,6 @@
                 <div class="error">{{ form.description.errors.0 }}</div>
             {% endif %}
         </div>
-        
 
         <div class="form-card form-card-available">
             <label for="{{ form.avaible.id_for_label }}" class="switch-label">
@@ -100,10 +107,10 @@
                 <span>{{ form.avaible.label }}</span>
             </label>
         </div>
-            <button type="submit" class="submit-btn">Salvar Produto</button>
-        </form>
-    </div>
-    <script src="{% static 'inventory/js/create_product.js' %}"></script>
-</body>
 
-</html>
+        <button type="submit" class="submit-btn">Salvar Produto</button>
+    </form>
+
+    <script src="{% static 'inventory/js/create_product.js' %}"></script>
+</div>
+{% endblock %}

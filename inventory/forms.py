@@ -19,7 +19,7 @@ class LoginForm(AuthenticationForm):
 class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
     class Meta: #model to use to buld the form
         model = Item        #we say to use the model item to buidl
-        fields = ['images','name', 'category', 'subcategory','quantity', 'price','description', 'avaible']  #field to show on form
+        fields = ['images','name', 'category', 'subcategory','quantity', 'minimum_stock', 'price','description', 'avaible']  #field to show on form
         exclude = ['user'] #remove user from the form
         widgets = {
             'name': forms.TextInput(attrs={
@@ -27,7 +27,11 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
                                             'required': False
                                             }),
             'quantity': forms.TextInput(attrs={'placeholder': 'Quantidade em Estoque'}),
-            'description': forms.TextInput(attrs={'placeholder': 'Breve Descrição do Produto'})
+            'description': forms.TextInput(attrs={'placeholder': 'Breve Descrição do Produto'}),
+            'minimum_stock': forms.NumberInput(attrs={
+                'min': 0,
+                'placeholder': 'Quantidade Mínima para Alerta'
+            }),
         }
 
 #VALIDATIONS
@@ -78,6 +82,14 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
                 raise forms.ValidationError("DESCRIÇÃO DEVE TER MENOS DE 250 CARACTERES")
         
         return description
+
+    def clean_minimum_stock(self):
+        minimo = self.cleaned_data.get('minimum_stock')
+        if minimo is None or minimo <= 0:
+            raise forms.ValidationError("A Quatidade Mínima de Estoque Deve ser Maior que 0")
+        return minimo
+
+
 
 class StockMovementForm(forms.ModelForm):
     def __init__(self,*args, user=None ,**kwargs):
@@ -146,7 +158,7 @@ class StockMovementForm(forms.ModelForm):
 class ItemEditForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['category', 'subcategory', 'name', 'price', 'description', 'images']
+        fields = ['category', 'subcategory', 'name', 'price', 'description', 'minimum_stock', 'images']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -165,6 +177,17 @@ class ItemEditForm(forms.ModelForm):
             raise ValueError("O nome do produto deve ter menos que 200 caracteres")
         
         return novo_nome
+    
+    def clean_minimum_stock(self):
+        novo_minimo_estoque = self.cleaned_data.get('minimum_stock')
+
+        if  novo_minimo_estoque is None:
+            return self.instance.minimum_stock
+        
+        if novo_minimo_estoque <= 0:
+            raise forms.ValidationError("O Estoque Mínimo não pode ser menor ou igual à 0")
+        
+        return novo_minimo_estoque
     
 
         

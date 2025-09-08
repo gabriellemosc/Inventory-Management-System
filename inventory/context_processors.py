@@ -5,8 +5,12 @@ from django.db.models import F
 
 def estoque_minimo(request):
     try:
-        count = Item.objects.filter(user=request.user,quantity__lt=10).count()
-       # count_products = count.count()
+        count = Item.objects.filter(
+        user=request.user
+        ).filter(
+        quantity__lt=F('minimum_stock')  # 👈 compara com o campo do próprio item
+        ).count()
+        
     except:
         count = 0
     return {'estoque_minimo_count': count,

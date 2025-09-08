@@ -1,37 +1,39 @@
+{% extends "inventory/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block extra_head %}
     <title>{{ item.name }} - Movimentar Estoque</title>
     <link rel="stylesheet" href="{% static 'inventory/css/move_stock.css' %}">
-</head>
-<body>
-    <div class="stock-container">
-        <h1 class="stock-title">Movimentar Estoque</h1>
+{% endblock %}
 
-        <div class="item-card">
-            <h2 class="item-name">{{ item.name }}</h2>
-            <p class="item-quantity">Estoque atual: <strong>{{ item.quantity }}</strong></p>
+{% block content %}
+<div class="stock-container">
+    <h1 class="stock-title">Movimentar Estoque</h1>
 
-            {% if not request.GET.tipo %}
-                 <p style="color: red; font-weight: bold;">⚠️ Por favor, escolha o tipo de movimentação: <u>Entrada</u> ou <u>Saída</u>.</p>
-            {% endif %}
+    <div class="item-card">
+        <h2 class="item-name">{{ item.name }}</h2>
+        <p class="item-quantity">Estoque atual: <strong>{{ item.quantity }}</strong></p>
 
-            <div class="stock-buttons">
-                <a href="{% url 'move_stock' item.pk %}?tipo=E" class="btn btn-add">&#x2795; Entrada</a>
-                <a href="{% url 'move_stock' item.pk %}?tipo=S" class="btn btn-remove">&#x2796; Saída</a>
-            </div>
+        {% if not request.GET.tipo %}
+            <p class="warning-msg">⚠️ Por favor, escolha o tipo de movimentação: 
+                <u>Entrada</u> ou <u>Saída</u>.
+            </p>
+        {% endif %}
 
-            <form method="POST" class="stock-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-confirm"> ✅ Confirmar</button>
-            </form>
+        <div class="stock-buttons">
+            <a href="{% url 'move_stock' item.pk %}?tipo=E" class="btn btn-add">
+                &#x2795; Entrada
+            </a>
+            <a href="{% url 'move_stock' item.pk %}?tipo=S" class="btn btn-remove">
+                &#x2796; Saída
+            </a>
+        </div>
 
-        </div>  
-    </div>
-</body>
-</html>
+        <form method="POST" class="stock-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-confirm">✅ Confirmar</button>
+        </form>
+    </div>  
+</div>
+{% endblock %}

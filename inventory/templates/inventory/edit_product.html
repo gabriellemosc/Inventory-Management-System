@@ -1,12 +1,149 @@
 {% extends "inventory/base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/edit_product.css' %}">
+{% endblock %}
+
 {% block content %}
- 
-        <h1>Editar Produtooo</h1>
+<div class="container">
+    <h2 class="titulo">✏️ Editar Produto</h2>
+
+    <!-- Miniatura do Produto -->
+    <div class="product-preview">
+        {% if form.instance.images %}
+            <img src="{{ form.instance.images.url }}" alt="{{ form.instance.name }}" class="product-thumb">
+        {% else %}
+            <div class="product-thumb placeholder">
+                Sem imagem
+            </div>
+        {% endif %}
+        <p class="product-name">{{ form.instance.name }}</p>
+    </div>
+
+    
+    <!-- Mensagens de sucesso ou erro -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    <form method="post" enctype="multipart/form-data" class="edit-form">
+        {% csrf_token %}
+
+   <!-- Imagem -->
+        <div class="form-card image-upload">
+            <label class="form-label">📷 Imagem do Produto</label>
+
+            <!-- Miniatura da imagem atual -->
+            {% if form.instance.images %}
+                <div class="image-preview">
+                    <img src="{{ form.instance.images.url }}" alt="{{ form.instance.name }}" class="product-thumb">
+                </div>
+            {% else %}
+                <div class="image-preview placeholder">
+                    Sem imagem
+                </div>
+            {% endif %}
+
+            <!-- Input de arquivo sem mostrar clear -->
+            <div class="custom-file-input">
+                <input type="file" name="{{ form.images.name }}" id="{{ form.images.id_for_label }}">
+                <span class="file-label">Escolher arquivo</span>
+                
+            </div>
+
+            {% if form.images.errors %}
+                <div class="error">{{ form.images.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+
         
-        <form>
-          {{ form.as_p }}      
-        </form>
+        <!-- Nome -->
+        <div class="form-card">
+            <label for="{{ form.name.id_for_label }}">Nome do Produto</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Categoria -->
+        <div class="form-card">
+            <label for="{{ form.category.id_for_label }}">Categoria</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="error">{{ form.category.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Subcategoria -->
+        <div class="form-card">
+            <label for="{{ form.subcategory.id_for_label }}">Subcategoria</label>
+            {{ form.subcategory }}
+            {% if form.subcategory.errors %}
+                <div class="error">{{ form.subcategory.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Preço -->
+        <div class="form-card">
+            <label for="{{ form.price.id_for_label }}">Preço</label>
+            {{ form.price }}
+            {% if form.price.errors %}
+                <div class="error">{{ form.price.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Quantidade -->
+        <div class="form-card">
+            <label for="{{ form.quantity.id_for_label }}">Quantidade</label>
+            {{ form.quantity }}
+            {% if form.quantity.errors %}
+                <div class="error">{{ form.quantity.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Estoque Mínimo -->
+        <div class="form-card">
+            <label for="{{ form.minimum_stock.id_for_label }}">Estoque Mínimo</label>
+            {{ form.minimum_stock }}
+            {% if form.minimum_stock.errors %}
+                <div class="error">{{ form.minimum_stock.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-card">
+            <label for="{{ form.description.id_for_label }}">Descrição</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="error">{{ form.description.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Disponibilidade -->
+        <div class="form-card form-card-available">
+            <label for="{{ form.avaible.id_for_label }}">
+                {{ form.avaible }}
+                <span>{{ form.avaible.label }}</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-salvar">Salvar Alterações</button>
+            <a href="{% url 'homepage' %}" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+    <script src="{% static 'inventory/js/edit_product.js' %}"></script>
+
+</div>
+
+
 
 {% endblock %}

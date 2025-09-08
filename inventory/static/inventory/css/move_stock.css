@@ -1,22 +1,32 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: #f5f7fa;
+main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: calc(100vh - 40px);
+    padding: 20px;
+    background: #f5f7fa;
 }
 
 .stock-container {
     text-align: center;
     padding: 2rem;
     background-color: white;
-    border-radius: 12px;
+    border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 420px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .stock-title {
@@ -29,7 +39,7 @@ body {
     background-color: #f9fbfd;
     border: 1px solid #dfe6ec;
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .item-name {
@@ -44,10 +54,32 @@ body {
     margin-bottom: 1.2rem;
 }
 
+.warning-msg {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
 .stock-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .btn {
@@ -58,7 +90,11 @@ body {
     border-radius: 8px;
     text-decoration: none;
     color: #fff;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
 }
 
 .btn-add {
@@ -77,9 +113,47 @@ body {
     background-color: #c0392b;
 }
 
+/* ---- Campo de quantidade moderno ---- */
+.stock-form p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1rem;
+}
 
+.stock-form label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.stock-form input[type="number"] {
+    width: 100px;
+    text-align: center;
+    padding: 8px;
+    font-size: 1.1rem;
+    border: 2px solid #dfe6ec;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.2s ease;
+    -moz-appearance: textfield;
+}
+
+.stock-form input[type="number"]:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.3);
+}
+
+.stock-form input[type=number]::-webkit-inner-spin-button, 
+.stock-form input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Botão confirmar */
 .btn-confirm {
-    background: #28a745 !important;  /* verde forte */
+    background: #28a745 !important;
     color: white !important;
     border: none !important;
     padding: 12px 24px !important;
@@ -98,4 +172,37 @@ body {
     background: #218838 !important;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15) !important;
     transform: translateY(-2px) !important;
+}
+/* ---- Caixa de Observação ---- */
+.stock-form textarea {
+    width: 100%;
+    min-height: 80px;
+    max-height: 180px;
+    padding: 12px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    border: 2px solid #dfe6ec;
+    border-radius: 10px;
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fdfdfd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.stock-form textarea:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+    background: #ffffff;
+}
+
+.stock-form textarea::placeholder {
+    color: #aaa;
+    font-style: italic;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.stock-form textarea:focus::placeholder {
+    opacity: 0.4;
 }

@@ -1,25 +1,21 @@
+{% extends "inventory/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Criar Categoria do Produto</title>
-    <link rel="stylesheet" href="{% static 'inventory/css/create_category.css' %}" />
-</head>
-<body>
-    <div class="category-form-container">
-        <h1>Criar Categoria do Produto</h1>
-        <form method="POST">
-            {% csrf_token %}
-            <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
-            {{ form.category }}
-            {% if form.category.errors %}
-                <div class="error">{{ form.category.errors.0 }}</div>
-            {% endif %}
-            <button type="submit">Adicionar Categoria</button>
-        </form>
-    </div>
-</body>
-</html>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/create_category.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="category-form-container">
+    <h1>Criar Categoria do Produto</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+        {{ form.category }}
+        {% if form.category.errors %}
+            <div class="error">{{ form.category.errors.0 }}</div>
+        {% endif %}
+        <button type="submit">Adicionar Categoria</button>
+    </form>
+</div>
+{% endblock %}

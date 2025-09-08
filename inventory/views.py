@@ -18,6 +18,7 @@ from django.db import DatabaseError
 from django.contrib import messages
 from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet
+from django.db.models import F
 
 
 # Create your views here.
@@ -183,9 +184,14 @@ def move_stock(request, pk):
 
 @login_required
 def minimun_stock(request):
-     produtos_com_estoque_baixo = Item.objects.filter(user=request.user, quantity__lt=10)        #compare with the field minimum stock
-   
-     return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})
+    produtos_com_estoque_baixo = Item.objects.filter(
+        user=request.user
+    ).filter(
+        quantity__lt=F('minimum_stock')  # 👈 compara com o campo do próprio item
+    )
+  
+                                                                                
+    return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})
 
 @login_required
 def stock_movement_report(request):
@@ -198,14 +204,22 @@ def stock_movement_report(request):
 
 @login_required
 def edit_product(request, pk):
-     if not pk:
-          raise Http404("Item não especificado para a edição")
 
-     item = get_object_or_404(Item, pk=pk, user=request.user) if pk else None
-     form = ItemEditForm()
+     item = get_object_or_404(Item, pk=pk, user=request.user) 
 
- #    if request.method == 'POST':
-  #      pass   
+     if request.method == 'POST':
+        form = ItemEditForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+             form.save()
+             messages.success(request, "Produto Atualizado com Sucesso!")
+             return redirect('homepage')
+        else:
+             messages.error(request, "Erro ao atualizar o produto. Verifique os campos.")
+             print(form.errors)
+     else:
+        form = ItemEditForm(instance=item)
+
+  
      
      return render(request, 'inventory/edit_product.html', {'form': form})
 
