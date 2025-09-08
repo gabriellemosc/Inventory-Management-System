@@ -57,7 +57,12 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
 
         subcategorias = SubCategory.objects.filter(id__in=Item.objects.filter(user=request.user).values("subcategory")).distinct()
 
-      
+        produtos_com_estoque_baixo = Item.objects.filter(
+            user=request.user).filter(quantity__lt=F('minimum_stock'))
+        
+        if produtos_com_estoque_baixo.exists():
+             messages.warning(request, f"⚠️ {produtos_com_estoque_baixo.count()} produto(s) estão com estoque baixo")
+        
                    
 
         return render(request, 'inventory/homepage.html', {
@@ -189,6 +194,7 @@ def minimun_stock(request):
     ).filter(
         quantity__lt=F('minimum_stock')  # 👈 compara com o campo do próprio item
     )
+
   
                                                                                 
     return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})

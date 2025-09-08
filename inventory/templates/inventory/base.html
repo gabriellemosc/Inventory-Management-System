@@ -11,6 +11,21 @@
 </head>
 <body>
 
+    {% if messages %}
+        <div class="toast-container">
+            {% for message in messages %}
+                <a href="{% url 'minimun_stock' %}" class="toast-link">
+                    <div class="toast {{ message.tags }}">
+                        <span class="toast-message">{{ message }}</span>
+                        <button class="toast-close" onclick="this.parentElement.style.display='none'; event.preventDefault();">
+                            &times;
+                        </button>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <aside class="sidebar">
         <div class="sidebar-logo">
             <h1>📦 SmartStock</h1>

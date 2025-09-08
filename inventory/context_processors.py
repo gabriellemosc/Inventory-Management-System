@@ -10,7 +10,7 @@ def estoque_minimo(request):
         ).filter(
         quantity__lt=F('minimum_stock')  # 👈 compara com o campo do próprio item
         ).count()
-        
+
     except:
         count = 0
     return {'estoque_minimo_count': count,
