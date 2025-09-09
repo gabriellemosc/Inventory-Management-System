@@ -23,9 +23,10 @@
 
         <div class="form-card image-upload">
             <label for="id_images" class="image-upload-label">
-                <span>📷 Adicionar uma imagem</span>
+                <span id="image-label-text">📷 Adicionar uma imagem</span>
                 {{ form.images }}
             </label>
+
             {% if form.images.errors %}
                 <div class="error">{{ form.images.errors.0 }}</div>
             {% endif %}
@@ -113,4 +114,23 @@
 
     <script src="{% static 'inventory/js/create_product.js' %}"></script>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fileInput = document.getElementById("id_images");
+        const labelText = document.getElementById("image-label-text");
+    
+        fileInput.addEventListener("change", function() {
+            if (fileInput.files.length > 0) {
+                // pega apenas o nome do arquivo (não o caminho completo)
+                labelText.textContent = "📂 " + fileInput.files[0].name;
+            } else {
+                // volta para o texto padrão caso o usuário remova o arquivo
+                labelText.textContent = "📷 Adicionar uma imagem";
+            }
+        });
+    });
+    </script>
+
 {% endblock %}

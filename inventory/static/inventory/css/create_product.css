@@ -340,3 +340,30 @@ input[type="number"]:focus {
     font-size: 0.9rem;
     font-weight: 500;
 }
+
+.image-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #f3f4f6;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.image-upload-label:hover {
+    background-color: #e2e8f0;
+    transform: scale(1.02);
+}
+
+#id_images {
+    display: none; /* esconde o input feio padrão */
+}
+
+#image-label-text {
+    font-weight: 500;
+    color: #374151;
+}
