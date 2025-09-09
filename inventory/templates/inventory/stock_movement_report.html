@@ -1,5 +1,7 @@
 {% extends "inventory/base.html" %}
 {% load static %}
+{% load humanize %}
+
 
 {% block title %}Relatório de Estoque{% endblock %}
 
@@ -42,7 +44,7 @@
 
                         <p><strong>Quantidade Atual em Estoque:</strong> {{ item_movimentado.item.quantity }}</p>
                         <p><strong>Quantidade anterior em Estoque:</strong> {{ item_movimentado.quantidade_antes }}</p>
-                        <p><strong>Preço Unitário:</strong> R$ {{ item_movimentado.item.price }}</p>
+                        <p><strong>Preço Unitário:</strong> R$ {{ item_movimentado.item.price|floatformat:2|intcomma }}</p>
                     </div>
                 </li>
             {% endfor %}

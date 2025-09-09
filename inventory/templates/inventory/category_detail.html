@@ -1,0 +1,47 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/category_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="category-detail-container">
+    <h2 class="page-title">📂 Categoria: {{ category.category }}</h2>
+
+    {% if items %}
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Subcategoria</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.subcategory.subcategory }}</td>
+                <td>R$ {{ item.price|floatformat:2|intcomma }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>R$ {{ item.subtotal|floatformat:2|intcomma }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="category-total">
+        💰 Valor total: <strong>R$ {{ total_value|floatformat:2|intcomma }}</strong>
+    </p>
+
+    {% else %}
+        <p class="empty-text">Nenhum produto nesta categoria.</p>
+    {% endif %}
+
+    <a href="{% url 'category_list' %}" class="btn-back">⬅ Voltar</a>
+</div>
+{% endblock %}

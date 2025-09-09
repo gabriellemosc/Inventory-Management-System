@@ -1,5 +1,7 @@
 {% extends "inventory/base.html" %}
 {% load static %}
+{% load humanize %}
+
 
 
 {% block extra_css %}
@@ -25,7 +27,7 @@
                             <strong>{{ produto.name }}</strong>
                             <p>Estoque: <span class="qtd">{{ produto.quantity }}</span></p>
                             <p>Mínimo: <span class="min">{{ produto.minimum_stock }}</span></p>
-                            <p class="preco">R$ {{ produto.price }}</p>
+                            <p class="preco">R$ {{ produto.price|floatformat:2|intcomma }}</p>
                         </div>
                         {% if produto.images %}
                         

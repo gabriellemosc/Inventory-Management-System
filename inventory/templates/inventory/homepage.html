@@ -1,5 +1,6 @@
 {% extends "inventory/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}Minha Home{% endblock %}
 
@@ -101,7 +102,7 @@
                     <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
             
                     <strong>{{ item.name }}</strong>
-                    Preço: R$ {{ item.price }} <br>
+                    Preço: R$ {{ item.price|floatformat:2|intcomma }} <br>
                     Estoque: {{ item.quantity }}
                 </a>
             </li>

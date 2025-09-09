@@ -34,14 +34,15 @@
         <ul class="sidebar-list">
             <li>
                 <a href="/" class="sidebar-link {% if request.path == '/' %}active{% endif %}">
-                    <img src="{% static 'inventory/icons/homepage.svg' %}" alt="Início" class="sidebar-icon">
-                    <span>Início</span>
+                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Início" class="sidebar-icon">
+                    <span>Produtos</span>
                 </a>
             </li>
+
             <li>
-                <a href="#" class="sidebar-link">
-                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Produtos" class="sidebar-icon">
-                    <span>Produtos</span>
+                <a href="{% url 'category_list' %}" class="sidebar-link">
+                    <img src="{% static 'inventory/icons/product.svg' %}" alt="Início" class="sidebar-icon">
+                    <span>Categoria</span>
                 </a>
             </li>
             <li>

@@ -19,7 +19,7 @@ from django.contrib import messages
 from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet
 from django.db.models import F
-
+from django.db.models import Sum, DecimalField, ExpressionWrapper
 
 # Create your views here.
 
@@ -70,6 +70,44 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
             'categorias': categorias,
             'subcategorias': subcategorias,
             })
+
+
+@login_required
+def category_list(request):
+
+    categories = (
+        Category.objects.prefetch_related("subcategories")
+        .annotate(
+            total_value=Sum(
+                F("item__price") * F("item__quantity"),
+                output_field=DecimalField(max_digits=12, decimal_places=2)
+            )
+        )
+    ) 
+    return render(request, "inventory/category_list.html", {"categories": categories})
+
+
+@login_required
+def category_detail(request, pk):
+     category = get_object_or_404(Category, pk=pk)
+
+     items = Item.objects.filter(category=category, user=request.user).select_related("subcategory")
+     
+     for item in items:
+          item.subtotal = item.price * item.quantity
+
+         # Calcula o valor total da categoria direto no banco
+     total_value = items.aggregate(
+        total=Sum(ExpressionWrapper(F("price") * F("quantity"), output_field=DecimalField()))
+    )["total"] or 0
+
+     return render(request, "inventory/category_detail.html", {
+        "category": category,
+        "items": items,
+        "total_value": total_value,
+    })
+
+
 
 @login_required
 def item_details(request, pk):

@@ -1,0 +1,62 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+{% load humanize %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'inventory/css/category_list.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="categories-container">
+    <h2 class="page-title">📂 Categorias</h2>
+    <a href="{% url 'create_category' %}" class="btn-add">+ Nova Categoria</a>
+
+    {% if categories %}
+    {% for category in categories %}
+    <a href="{% url 'category_detail' category.pk %}" class="category-link">
+
+        <div class="category-card">
+            <h3 class="category-title">{{ category.category }}</h3>
+        
+            <p class="category-value">
+                💰 Valor total em estoque:
+                <strong>
+                    {% if category.total_value %}
+                        R$ {{ category.total_value|floatformat:2|intcomma }}
+                    {% else %}
+                        R$ 0.00
+                    {% endif %}
+                </strong>
+            </p>
+        
+            {% if category.subcategories.all %}
+                <ul class="subcategory-list">
+                    {% for sub in category.subcategories.all %}
+                        <li class="subcategory-item">{{ sub.subcategory }}</li>
+                    {% empty %}
+                        <li class="empty-subcategory">Sem subcategorias</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty-subcategory">Sem subcategorias</p>
+            {% endif %}
+        </div>
+    </a>
+    {% empty %}
+        <div class="empty-container">
+            <p class="empty-text">Nenhuma categoria cadastrada.</p>
+            <a href="{% url 'create_category' %}" class="btn-add">➕ Cadastrar Categoria</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="empty-container">
+        <p class="empty-text">Nenhuma categoria encontrada no sistema.</p>
+        <a href="{% url 'create_category' %}" class="btn-add">➕ Cadastrar Categoria</a>
+    </div>
+{% endif %}
+
+
+</div>
+{% endblock %}
