@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="container">
     <h2 class="titulo">✏️ Editar Produto</h2>
 
@@ -29,8 +30,29 @@
                 <div class="message {{ message.tags }}">{{ message }}</div>
             {% endfor %}
         </div>
-    {% endif %}
+    {% endif %} 
 
+        <!-- Exclusão de Produto -->
+        <div class="btn-excluir">
+            <form id="deleteForm-{{ item.pk }}" method="POST" action="{% url 'delete_product' pk=item.pk %}">
+                {% csrf_token %}
+                <button type="submit" onclick="openDeleteModal(event, '{{ item.pk }}')" class="btn-excluir">
+                    🗑️ Excluir Produto
+                </button>
+            </form>
+        </div>
+        <!-- Modal de confirmação -->
+            <div id="deleteModal-{{ item.pk }}" class="modal">
+                <div class="modal-content">
+                <span class="close" onclick="closeDeleteModal('{{ item.pk }}')">&times;</span>
+                <h3>⚠️ Atenção!</h3>
+                <p>Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.</p>
+                <div class="modal-actions">
+                    <button class="btn-cancelar" onclick="closeDeleteModal('{{ item.pk }}')">Cancelar</button>
+                    <button class="btn-salvar" onclick="confirmDelete('{{ item.pk }}')">Excluir</button>
+                </div>
+                </div>
+            </div>
 
     <form method="post" enctype="multipart/form-data" class="edit-form">
         {% csrf_token %}
@@ -144,6 +166,29 @@
 
 </div>
 
+
+<script>
+    function openDeleteModal(event, id) {
+        event.preventDefault();
+        document.getElementById(`deleteModal-${id}`).style.display = "block";
+    }
+    
+    function closeDeleteModal(id) {
+        document.getElementById(`deleteModal-${id}`).style.display = "none";
+    }
+    
+    function confirmDelete(id) {
+        document.getElementById(`deleteForm-${id}`).submit();
+    }
+    
+    // Fecha modal ao clicar fora
+    window.onclick = function(e) {
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach(modal => {
+            if (e.target == modal) modal.style.display = "none";
+        });
+    }
+    </script>
 
 
 {% endblock %}

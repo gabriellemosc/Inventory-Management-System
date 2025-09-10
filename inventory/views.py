@@ -18,7 +18,7 @@ from django.db import DatabaseError
 from django.contrib import messages
 from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet
-from django.db.models import F
+from django.db.models import F, Q
 from django.db.models import Sum, DecimalField, ExpressionWrapper
 
 # Create your views here.
@@ -28,6 +28,7 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
     #filter products by user
         itens = Item.objects.filter(user=request.user)
         
+        nome = request.GET.get("nome")
         preco_min = request.GET.get("preco_min")
         preco_max = request.GET.get("preco_max")
         estoque_min = request.GET.get("estoque_min")
@@ -35,6 +36,8 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
         subcategoria = request.GET.get("subcategoria")
         disponivel = request.GET.get("disponivel")
 
+        if nome:
+             itens = itens.filter(name__icontains=nome)
         if preco_min:
             itens = itens.filter(price__gte=preco_min)
         if preco_max:
@@ -69,6 +72,7 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
             'itens':itens,
             'categorias': categorias,
             'subcategorias': subcategorias,
+            "nome": nome,
             })
 
 
@@ -265,8 +269,30 @@ def edit_product(request, pk):
 
   
      
-     return render(request, 'inventory/edit_product.html', {'form': form})
+     return render(request, 'inventory/edit_product.html', {'form': form, 'item': item})
 
+
+@login_required
+def delete_product(request, pk):
+    try:
+         item = get_object_or_404(Item, pk=pk, user=request.user)
+    except Exception as e:
+          messages.error(request, "Produto não encontrado ou você não tem permissão para excluí-lo")
+          return redirect('homepage') 
+       
+    if request.method != 'POST':
+          messages.error(request, "Método inválido para exclusão.")
+          return redirect('edit_product', pk=pk)
+    try:
+          item.delete()
+          messages.success(request, "Produto excluído com sucesso")
+    except Exception as e:
+          print(f"[ERRO AO DELETAR PRODUTO] ID {pk}, ERRO {e}")
+          messages.error(request, "Erro interno ao excluir produto. Tente novamente mais tarde.")
+          return redirect('edit_product', pk=pk)
+          
+    return redirect('homepage')
+    
 
 @login_required
 def report_stock_movement(request):

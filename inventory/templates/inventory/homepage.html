@@ -19,9 +19,17 @@
     <h2>Seus Produtos Cadastrados</h2>
 
  
-
+        
 
     <form method="get" class="filtros-form">
+
+
+        <label> Nome
+            <input type="text" name="nome" placeholder="Nome do produto"
+                 value="{{ nome|default:'' }}" class="search-input">
+                 </label>
+
+
         <label>
             Preço mínimo:
             <input 
@@ -55,61 +63,62 @@
                 value="{{ request.GET.estoque_min }}">
         </label>
     
-        <label>
-            Categoria:
-            <select name="categoria">
-                <option value="">Todas</option>
-                {% for cat in categorias %}
-                    <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
-                        {{ cat.category }}
-                    </option>
-                {% endfor %}
-            </select>
-        </label>
-    
-        <label>
-            Subcategoria:
-            <select name="subcategoria">
-                <option value="">Todas</option>
-                {% for sub in subcategorias %}
-                    <option value="{{ sub.id }}" {% if request.GET.subcategoria == sub.id|stringformat:"s" %}selected{% endif %}>
-                        {{ sub.subcategory }}
-                    </option>
-                {% endfor %}
-            </select>
-        </label>
-    
-        <label>
-            Disponível:
-            <select name="disponivel">
-                <option value="">Todos</option>
-                <option value="sim" {% if request.GET.disponivel == "sim" %}selected{% endif %}>Sim</option>
-                <option value="nao" {% if request.GET.disponivel == "nao" %}selected{% endif %}>Não</option>
-            </select>
-        </label>
-    
-        <button type="submit">Filtrar</button>
-    </form>
-    
-      
+            <label>
+                Categoria:
+                <select name="categoria">
+                    <option value="">Todas</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>
+                            {{ cat.category }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+        
+            <label>
+                Subcategoria:
+                <select name="subcategoria">
+                    <option value="">Todas</option>
+                    {% for sub in subcategorias %}
+                        <option value="{{ sub.id }}" {% if request.GET.subcategoria == sub.id|stringformat:"s" %}selected{% endif %}>
+                            {{ sub.subcategory }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+        
+            <label>
+                Disponível:
+                <select name="disponivel">
+                    <option value="">Todos</option>
+                    <option value="sim" {% if request.GET.disponivel == "sim" %}selected{% endif %}>Sim</option>
+                    <option value="nao" {% if request.GET.disponivel == "nao" %}selected{% endif %}>Não</option>
+                </select>
+            </label>
+        
+            <button type="submit">Filtrar</button>
+        </form>
+        
+        
 
 
-    {% if itens %}
-        <ul>
-            {% for item in itens %}
-            <li>
-                <a href="{% url 'item_details' item.pk %}">
-                    <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
-            
-                    <strong>{{ item.name }}</strong>
-                    Preço: R$ {{ item.price|floatformat:2|intcomma }} <br>
-                    Estoque: {{ item.quantity }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p class="empty-message">Você ainda não cadastrou nenhum produto.</p>
-    {% endif %}
-</div>
-{% endblock %}
+        {% if itens %}
+            <ul>
+                {% for item in itens %}
+                <li>
+                    <a href="{% url 'item_details' item.pk %}">
+                        <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
+                
+                        <strong>{{ item.name }}</strong>
+                        Preço: R$ {{ item.price|floatformat:2|intcomma }} <br>
+                        Estoque: {{ item.quantity }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-message">Você ainda não cadastrou nenhum produto.</p>
+        {% endif %}
+    </div>
+
+    {% endblock %}
