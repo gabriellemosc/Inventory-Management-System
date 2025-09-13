@@ -7,13 +7,32 @@
 
 {% block content %}
 <div class="subcategory-form-container">
-    <h1>Criar Subcategoria</h1>
+    <h1>➕ Criar Subcategoria</h1>
 
     <form method="POST" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <!-- Campo oculto para enviar a categoria no POST -->
+        {{ form.category.as_hidden }}
+
+        <!-- Mostra a categoria selecionada, mas desabilitada para edição -->
+        <div class="form-group">
+            <label>Categoria</label>
+            <input type="text" value="{{ category.category }}" disabled class="readonly-field">
+        </div>
+
+        <!-- Campo para digitar a subcategoria -->
+        <div class="form-group">
+            <label for="{{ form.subcategory.id_for_label }}">Nome da Subcategoria</label>
+            {{ form.subcategory }}
+            {% if form.subcategory.errors %}
+                <div class="error">{{ form.subcategory.errors.0 }}</div>
+            {% endif %}
+        </div>
 
         <button type="submit" class="submit-btn">Adicionar Subcategoria</button>
     </form>
+
+    <a href="{{ request.GET.next|default:'/' }}" class="btn-back">⬅ Voltar</a>
 </div>
 {% endblock %}

@@ -14,6 +14,20 @@
     <a href="{% url 'create_category' %}" class="btn-add">+ Nova Categoria</a>
 
     {% if categories %}
+
+    <div class="filter-bar">
+        <form method="get" class="filter-form">
+            <label for="sort">Ordenar por:</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="name_asc" {% if sort == 'name_asc' %}selected{% endif %}>Nome A-Z</option>
+                <option value="name_desc" {% if sort == 'name_desc' %}selected{% endif %}>Nome Z-A</option>
+                <option value="value_asc" {% if sort == 'value_asc' %}selected{% endif %}>Menor valor em estoque</option>
+                <option value="value_desc" {% if sort == 'value_desc' %}selected{% endif %}>Maior valor em estoque</option>
+            </select>
+        </form>
+    </div>
+
+    
     {% for category in categories %}
     <a href="{% url 'category_detail' category.pk %}" class="category-link">
 

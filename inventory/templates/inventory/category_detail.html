@@ -42,6 +42,15 @@
         <p class="empty-text">Nenhum produto nesta categoria.</p>
     {% endif %}
 
-    <a href="{% url 'category_list' %}" class="btn-back">⬅ Voltar</a>
+
+    <div class="action-buttons">
+        <a href="{% url 'create_subcategory' %}?category_id={{ category.id }}&next={% url 'category_detail' pk=category.id %}" 
+           class="btn-create">
+            ➕ Criar Subcategoria
+        </a>
+        <a href="{% url 'category_list' %}" class="btn-back">⬅ Voltar</a>
+    </div>
+
+ 
 </div>
 {% endblock %}

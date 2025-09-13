@@ -53,3 +53,44 @@
     background: #2b2d99;
     transform: scale(1.05);
 }
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-create,
+.btn-back {
+    display: inline-block;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-create {
+    background-color: #28a745;
+    color: white;
+    box-shadow: 0 5px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-create:hover {
+    background-color: #70b67f;
+    box-shadow: 0 8px 15px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-back {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-back:hover {
+    background-color: #e6e6e6;
+    border-color: #999;
+    transform: translateY(-2px);
+}

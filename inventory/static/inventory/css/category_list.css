@@ -116,3 +116,31 @@ a{
     background: #2b2d99;
     transform: scale(1.05);
 }
+
+
+.filter-bar {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-form select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-form select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0,123,255,0.3);
+}

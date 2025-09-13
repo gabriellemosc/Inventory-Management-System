@@ -79,6 +79,8 @@ def homepage(request):  #after the urls.py direct to here, the function decide w
 @login_required
 def category_list(request):
 
+    sort = request.GET.get('sort', 'name_asc')
+
     categories = (
         Category.objects.prefetch_related("subcategories")
         .annotate(
@@ -88,7 +90,17 @@ def category_list(request):
             )
         )
     ) 
-    return render(request, "inventory/category_list.html", {"categories": categories})
+
+    if sort == 'name_asc':
+         categories = categories.order_by('category')   #A-Z
+    elif sort == 'name_desc':
+         categories = categories.order_by('-category')  #Z-A
+    elif sort == 'value_asc':
+         categories = categories.order_by('total_value')
+    elif sort == 'value_desc':
+         categories = categories.order_by('-total_value')
+        
+    return render(request, "inventory/category_list.html", {"categories": categories, "sort":sort})
 
 
 @login_required
@@ -188,6 +200,13 @@ def create_category(request):
 def create_subcategory(request):
     next_url = request.GET.get('next', '/')         #take the previous path
     category_id  = request.GET.get('category_id')
+    category = None
+
+    if category_id:
+            try: 
+                 category = Category.objects.get(id=category_id)
+            except Category.DoesNotExist:
+                 category = None
 
     if request.method == 'POST':
         form = SubCategoryForm(request.POST)
@@ -202,7 +221,7 @@ def create_subcategory(request):
             inital_data['category'] = category_id
         form = SubCategoryForm(initial=inital_data)     #pass the DATAS already to the form as context
 
-    return render(request, 'inventory/Create_Product/create_subcategory.html', {"form":form})
+    return render(request, 'inventory/Create_Product/create_subcategory.html', {"form":form, "category": category})
 
 
 

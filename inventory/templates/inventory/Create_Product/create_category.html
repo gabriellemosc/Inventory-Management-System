@@ -10,8 +10,9 @@
     <h1>Criar Categoria do Produto</h1>
     <form method="POST">
         {% csrf_token %}
-        <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+        <label for="{{ form.category.id_for_label }}">Categoria </label>
         {{ form.category }}
+        
         {% if form.category.errors %}
             <div class="error">{{ form.category.errors.0 }}</div>
         {% endif %}
