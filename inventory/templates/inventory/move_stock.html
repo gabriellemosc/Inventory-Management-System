@@ -14,13 +14,19 @@
         <h2 class="item-name">{{ item.name }}</h2>
         <p class="item-quantity">Estoque atual: <strong>{{ item.quantity }}</strong></p>
 
-        {% if not request.GET.tipo %}
+          
+          
+        <p class="selected-type">
+            Tipo selecionado: <span id="tipo-span">Nenhum</span>
+        </p>
+        
+      
             <p class="warning-msg">⚠️ Por favor, escolha o tipo de movimentação: 
-                <u>Entrada</u> ou <u>Saída</u>.
+                <u>Entrada</u> ou <u>Saída</u>
             </p>
-        {% endif %}
 
-        <div class="stock-buttons">
+            
+            <div class="stock-buttons">
             <a href="{% url 'move_stock' item.pk %}?tipo=E" class="btn btn-add">
                 &#x2795; Entrada
             </a>
@@ -36,4 +42,38 @@
         </form>
     </div>  
 </div>
+
+
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const tipoSpan = document.getElementById("tipo-span");
+
+    // Função para pegar parâmetro da URL
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    const tipo = getQueryParam("tipo");
+
+    if (tipo === "E") {
+        tipoSpan.textContent = "Entrada";
+        tipoSpan.className = "tipo-entrada";
+    } else if (tipo === "S") {
+        tipoSpan.textContent = "Saída";
+        tipoSpan.className = "tipo-saida";
+    } else {
+        tipoSpan.textContent = "Nenhum";
+    }
+});
+
+
+
+
+</script>
+
 {% endblock %}
+

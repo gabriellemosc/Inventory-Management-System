@@ -32,6 +32,10 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
                 'min': 0,
                 'placeholder': 'Quantidade Mínima para Alerta'
             }),
+            'price': forms.TextInput(attrs={
+                'placeholder': 'Preço',
+                'id': 'id_price'
+            }),
         }
 
 #VALIDATIONS

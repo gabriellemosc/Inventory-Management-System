@@ -71,7 +71,10 @@
 
         <div class="form-card">
             <label for="id_price" class="form-label">Preço</label>
-            {{ form.price }}
+            <div class="price-wrapper">
+                <span class="price-prefix">R$</span>
+                {{ form.price }}
+            </div>
             {% if form.price.errors %}
                 <div class="error">{{ form.price.errors.0 }}</div>
             {% endif %}
@@ -132,6 +135,47 @@
             }
         });
     });
+
+    //SEPARACAO DE MILHAR E COLOCAR NOME DO ARQUIVO
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const priceInput = document.getElementById("id_price");
+
+    if (priceInput) {
+        priceInput.addEventListener("input", function (e) {
+            let cursorPosition = priceInput.selectionStart;
+
+            // Remove tudo que não for número
+            let value = priceInput.value.replace(/\D/g, "");
+
+            if (!value) {
+                priceInput.value = "";
+                return;
+            }
+
+            // Converte para número e divide por 100 para centavos
+            let number = parseFloat(value) / 100;
+
+            // Formata com separador de milhar
+            let formatted = number.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            priceInput.value = formatted;
+
+            // Coloca o cursor no final do input
+            priceInput.setSelectionRange(formatted.length, formatted.length);
+        });
+
+        // Ao enviar o form, remove formatação para backend
+        priceInput.form.addEventListener("submit", function () {
+            let raw = priceInput.value.replace(/\./g, "").replace(",", ".");
+            priceInput.value = raw;
+        });
+    }
+});
+
     </script>
 
 {% endblock %}

@@ -206,3 +206,37 @@ main {
 .stock-form textarea:focus::placeholder {
     opacity: 0.4;
 }
+
+.tipo-entrada {
+    color: #0f9d58; /* verde */
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background-color: #e6f4ea;
+}
+
+.tipo-saida {
+    color: #d93025; /* vermelho */
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background-color: #fce8e6;
+}
+
+.tipo-nenhum {
+    color: #666;
+    font-weight: 500;
+}
+
+.tipo-exemplo {
+    font-weight: 600;
+    color: #1a73e8; /* azul */
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    background-color: #e8f0fe;
+    margin: 0 0.2rem;
+}   
+
+u   {
+    text-decoration: none;
+}
