@@ -1,29 +1,29 @@
 /* inventory/static/inventory/css/item_details.css */
 
-/* Container para centralizar e dar estilo à área dos detalhes */
-
+/* Garante que o layout se adapte a diferentes tamanhos */
 body {
-    margin-left: 200px; /* para não colidir com navbar lateral */
+    margin: 0; /* remove espaço lateral */
     background-color: #f7f8fa;
     font-family: 'Inter', sans-serif;
 }
 
+/* Container centralizado igual a homepage */
 .details-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente */
-    text-align: center;  /* Centraliza o texto */
-    max-width: 700px;
+    align-items: center;
+    text-align: center;
+    max-width: 800px; /* mesma largura da homepage */
     margin: 40px auto;
     padding: 25px 30px;
-    background-color: #f9f9f9;
+    background-color: #fff; /* deixa branco igual homepage */
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 
 /* Título principal */
-h1 {
+.details-container h1 {
     color: #2c3e50;
     font-size: 2.8rem;
     margin-bottom: 20px;
@@ -32,30 +32,29 @@ h1 {
 }
 
 /* Parágrafos para os detalhes */
-p {
+.details-container p {
     font-size: 1.6rem;
     color: #4a5568;
     margin: 10px 0;
     line-height: 1.5;
 }
 
-/* Destaque para os rótulos fortes */
-p strong {
+.details-container p strong {
     color: #2c3e50;
 }
 
 /* Imagem do produto */
-img {
+.details-container img {
     display: block;
     max-width: 100%;
     height: auto;
     border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
     margin: 25px 0;
 }
 
-/* Link Voltar estilizado como botão */
-a.back-link {
+/* Botão voltar */
+.details-container a.back-link {
     display: inline-block;
     margin-top: 30px;
     padding: 12px 22px;
@@ -67,24 +66,67 @@ a.back-link {
     transition: background-color 0.3s ease;
 }
 
-a.back-link:hover {
+.details-container a.back-link:hover {
     background-color: #1c5980;
 }
 
-/* Para telas pequenas */
-@media (max-width: 480px) {
+/* Botão editar */
+.details-container .btn-edit {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #3498db;
+    color: white;
+    margin-top: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.details-container .btn-edit:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 1024px) {
+    body {
+        margin-left: 0; /* Remove espaço lateral para sidebar em tablets/celulares */
+    }
+
     .details-container {
-        padding: 20px 15px;
-        margin: 20px;
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 20px;
     }
 
-    h1 {
-        font-size: 2rem;
+    .details-container h1 {
+        font-size: 2.2rem;
     }
 
-    p {
-        font-size: 1rem;
+    .details-container p {
+        font-size: 1.3rem;
     }
 }
 
+@media (max-width: 480px) {
+    .details-container {
+        padding: 15px;
+        margin: 10px;
+    }
 
+    .details-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .details-container p {
+        font-size: 1rem;
+    }
+
+    .details-container a.back-link,
+    .details-container .btn-edit {
+        width: 100%; /* Botões ocupam toda a largura no mobile */
+        text-align: center;
+    }
+}

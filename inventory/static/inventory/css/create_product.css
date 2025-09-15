@@ -1,40 +1,40 @@
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f7f8fa;
-        margin: 0;
-        padding: 0;
-        color: #333;
-    }
+/* ===== Estilos gerais ===== */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f8fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
-    .form-container {
-        max-width: 600px;
-        margin: 3rem auto;
-        padding: 2rem;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+.form-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
-    .form-title {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-        text-align: center;
-        color: #0e1116;
-    }
+.form-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #0e1116;
+}
 
-    .form-card {
-        margin-bottom: 1.5rem;
-        display: flex;
-        flex-direction: column;
-    }
+.form-card {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
 
+label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
 
-
-    label {
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-    }
-
+/* ===== Inputs ===== */
 input[type="text"],
 input[type="number"],
 input[type="file"],
@@ -45,7 +45,9 @@ select {
     border-radius: 8px;
     font-size: 0.95rem;
     background-color: #fafafa;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 input:focus,
@@ -53,6 +55,7 @@ textarea:focus,
 select:focus {
     border-color: #3366cc;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.15);
 }
 
 .error {
@@ -72,6 +75,7 @@ select:focus {
     text-decoration: underline;
 }
 
+/* ===== Botão ===== */
 .submit-btn {
     width: 100%;
     padding: 0.75rem;
@@ -82,267 +86,15 @@ select:focus {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .submit-btn:hover {
     background-color: #2851a3;
+    transform: translateY(-2px);
 }
 
-.image-upload {
-    position: relative;
-}
-
-.image-upload-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border: 2px dashed #cbd5e0;
-    border-radius: 10px;
-    padding: 1rem;
-    background-color: #f9fafb;
-    color: #555;
-    cursor: pointer;
-    font-weight: 500;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.image-upload-label:hover {
-    border-color: #3366cc;
-    background-color: #f0f4ff;
-}
-
-.image-upload input[type="file"] {
-    display: none;
-}
-
-.form-label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-    color: #333;
-}
-
-input[type="text"] {
-    background-color: #fafafa;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input[type="text"]:focus {
-    border-color: #3366cc;
-    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.15);
-    outline: none;
-}
-
-.form-label-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.4rem;
-}
-
-select {
-    appearance: none;
-    background-color: #fafafa;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.95rem;
-    width: 100%;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-select:focus {
-    border-color: #3366cc;
-    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.15);
-    outline: none;
-}
-
-.form-label-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.4rem;
-}
-
-select {
-    appearance: none;
-    background-color: #fafafa;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.95rem;
-    width: 100%;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-select:focus {
-    border-color: #3366cc;
-    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.15);
-    outline: none;
-}
-
-input[type="number"] {
-    background-color: #fafafa;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    width: 100%;
-}
-
-input[type="number"]:focus {
-    border-color: #3366cc;
-    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.15);
-    outline: none;
-}
-
-/* Estilo só para o campo quantity */
-.form-card label[for="id_quantity"] {
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 5px;
-    display: block;
-    font-size: 1rem;
-}
-
-.form-card input#id_quantity {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1.5px solid #bbb;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    box-sizing: border-box;
-}
-
-.form-card input#id_quantity:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 6px rgba(0, 86, 179, 0.5);
-    outline: none;
-}
-
-.form-card label[for="id_quantity"] + input + .error {
-    margin-top: 4px;
-    font-size: 0.85rem;
-    color: #d93025;
-}
-
-.form-card-available {
-    margin-top: 15px;
-}
-
-.switch-label {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 600;
-    color: #333;
-    user-select: none;
-    font-size: 1rem;
-}
-
-/* Esconde o checkbox padrão */
-.switch-label input[type="checkbox"] {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-}
-
-/* Cria a "caixinha" do switch */
-.switch-label span {
-    position: relative;
-    padding-left: 50px;
-    line-height: 24px;
-}
-
-/* O fundo do switch */
-.switch-label span::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 40px;
-    height: 24px;
-    background-color: #ccc;
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-}
-
-/* O círculo móvel */
-.switch-label span::after {
-    content: "";
-    position: absolute;
-    left: 2px;
-    top: 2px;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-}
-
-/* Quando o checkbox estiver marcado */
-.switch-label input[type="checkbox"]:checked + span::before {
-    background-color: #007bff;
-}
-
-.switch-label input[type="checkbox"]:checked + span::after {
-    transform: translateX(16px);
-}
-
-/* Container exclusivo da descrição */
-.form-card-description {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Label da descrição */
-.form-label-description {
-    font-weight: 600;
-    font-size: 1.15rem;
-    margin-bottom: 8px;
-    color: #222;
-}
-
-/* Textarea exclusivo da descrição */
-.textarea-description {
-    width: 100%;
-    min-height: 160px; /* maior para descrição */
-    padding: 14px 16px;
-    font-size: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    resize: vertical;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Foco do textarea */
-.textarea-description:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
-    outline: none;
-}
-
-/* Mensagem de erro da descrição */
-.form-card-description .error {
-    margin-top: 6px;
-    color: #d93025;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
+/* ===== Upload de imagem ===== */
 .image-upload-label {
     display: flex;
     align-items: center;
@@ -362,7 +114,7 @@ input[type="number"]:focus {
 }
 
 #id_images {
-    display: none; /* esconde o input feio padrão */
+    display: none;
 }
 
 #image-label-text {
@@ -370,23 +122,181 @@ input[type="number"]:focus {
     color: #374151;
 }
 
-
-/* Remove setinhas do input number */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+/* ===== Switch ===== */
+.switch-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+    user-select: none;
+    font-size: 1rem;
+    margin-top: 10px;
 }
 
+.switch-label input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
 
-/* Wrapper para alinhar o R$ e o input */
+.switch-label span {
+    position: relative;
+    padding-left: 50px;
+    line-height: 24px;
+}
+
+.switch-label span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.switch-label span::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.switch-label input[type="checkbox"]:checked + span::before {
+    background-color: #007bff;
+}
+
+.switch-label input[type="checkbox"]:checked + span::after {
+    transform: translateX(16px);
+}
+
+/* ===== Textarea descrição ===== */
+.textarea-description {
+    width: 100%;
+    min-height: 160px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.textarea-description:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+    outline: none;
+}
+
+.form-card-description .error {
+    margin-top: 6px;
+    color: #d93025;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ===== Preço ===== */
 .price-wrapper {
     display: flex;
     align-items: center;
-    gap: 4px; /* espaçamento entre R$ e input */
+    gap: 4px;
 }
 
 .price-prefix {
     font-weight: bold;
     font-size: 1rem;
 }
+
+/* ===== Remove setinhas input number ===== */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+        margin: 2rem auto;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    input, select, textarea {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+    }
+
+    .submit-btn {
+        font-size: 0.95rem;
+        padding: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 1rem;
+        margin: 1rem;
+        width: 95%;
+    }
+
+    .form-title {
+        font-size: 1.4rem;
+    }
+
+    input, select, textarea {
+        font-size: 0.9rem;
+        padding: 0.45rem;
+    }
+
+    .submit-btn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .image-upload-label {
+        padding: 10px;
+        gap: 4px;
+    }
+
+    .textarea-description {
+        min-height: 120px;
+        padding: 12px;
+    }
+
+    .switch-label span {
+        padding-left: 40px;
+    }
+
+    .switch-label span::before {
+        width: 32px;
+        height: 20px;
+    }
+
+    .switch-label span::after {
+        width: 16px;
+        height: 16px;
+    }
+
+    .price-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+}
+    

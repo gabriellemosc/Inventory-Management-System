@@ -1,13 +1,12 @@
-/* Container centralizado com sombra e borda arredondada */
+/* ===== Container geral ===== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f4f7f8;
 
     display: flex;
-    justify-content: center; /* Centraliza na horizontal */
-    align-items: center;     /* Centraliza na vertical */
-    
-    min-height: 100vh; /* garante que ocupa toda a altura da tela */
+    justify-content: center; /* Centraliza horizontal */
+    align-items: center;     /* Centraliza vertical */
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -16,16 +15,13 @@ body {
     padding: 30px 40px;
     border-radius: 14px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    
     width: 100%;
     max-width: 400px;
-    
     box-sizing: border-box;
-    
-    /* garante centralização mesmo em casos de rolagem */
     margin: auto;
 }
-/* Título */
+
+/* ===== Título ===== */
 .category-form-container h1 {
     margin-bottom: 25px;
     color: #007bff;
@@ -35,7 +31,7 @@ body {
     letter-spacing: 0.04em;
 }
 
-/* Label estilizado */
+/* ===== Labels ===== */
 label {
     display: block;
     font-weight: 600;
@@ -44,7 +40,7 @@ label {
     font-size: 1rem;
 }
 
-/* Campo input */
+/* ===== Inputs ===== */
 input[type="text"], select {
     width: 100%;
     padding: 12px 15px;
@@ -61,7 +57,7 @@ input[type="text"]:focus, select:focus {
     outline: none;
 }
 
-/* Botão estilizado */
+/* ===== Botão ===== */
 button[type="submit"] {
     margin-top: 20px;
     width: 100%;
@@ -74,18 +70,73 @@ button[type="submit"] {
     border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 5px 12px rgba(0,123,255,0.4);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
     box-shadow: 0 6px 15px rgba(0,86,179,0.6);
+    transform: translateY(-2px);
 }
 
-/* Mensagem de erro */
+/* ===== Mensagem de erro ===== */
 .error {
     margin-top: 8px;
     color: #d93025;
     font-weight: 600;
     font-size: 0.9rem;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+    .category-form-container {
+        padding: 25px 30px;
+        max-width: 350px;
+    }
+
+    .category-form-container h1 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 0.95rem;
+    }
+
+    input[type="text"], select {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    button[type="submit"] {
+        padding: 12px 0;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-form-container {
+        padding: 20px 20px;
+        max-width: 300px;
+        margin: 15px;
+    }
+
+    .category-form-container h1 {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+    label {
+        font-size: 0.9rem;
+    }
+
+    input[type="text"], select {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    button[type="submit"] {
+        padding: 10px 0;
+        font-size: 0.95rem;
+    }
 }

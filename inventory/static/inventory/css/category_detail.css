@@ -1,3 +1,4 @@
+/* Container da categoria */
 .category-detail-container {
     max-width: 900px;
     margin: 0 auto;
@@ -7,12 +8,14 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
+/* Título da página */
 .page-title {
     font-size: 1.8rem;
     color: #3f37c9;
     margin-bottom: 1rem;
 }
 
+/* Total de itens */
 .category-total {
     background: #edf2ff;
     padding: 0.8rem 1rem;
@@ -21,10 +24,12 @@
     margin-bottom: 1.5rem;
 }
 
+/* Tabela de itens */
 .items-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 2rem;
+    table-layout: auto;
 }
 
 .items-table th,
@@ -32,6 +37,7 @@
     padding: 0.8rem;
     border-bottom: 1px solid #ddd;
     text-align: left;
+    word-break: break-word; /* Evita que textos grandes quebrem layout */
 }
 
 .items-table th {
@@ -39,25 +45,13 @@
     font-weight: 600;
 }
 
-.btn-back {
-    display: inline-block;
-    background: #3f37c9;
-    color: white;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.btn-back:hover {
-    background: #2b2d99;
-    transform: scale(1.05);
-}
-
+/* Botões */
 .action-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    flex-wrap: wrap; /* Permite quebra de linha em telas pequenas */
+    gap: 10px; /* Espaço entre botões */
 }
 
 .btn-create,
@@ -93,4 +87,55 @@
     background-color: #e6e6e6;
     border-color: #999;
     transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .category-detail-container {
+        padding: 1.5rem;
+        margin: 15px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .category-total {
+        font-size: 1rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .items-table th,
+    .items-table td {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column; /* Botões um embaixo do outro */
+        align-items: stretch;
+    }
+
+    .btn-create,
+    .btn-back {
+        width: 100%; /* Ocupam toda a largura em telas pequenas */
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.3rem;
+    }
+
+    .items-table th,
+    .items-table td {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+    .category-total {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.6rem;
+    }
 }
