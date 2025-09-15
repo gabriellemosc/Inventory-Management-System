@@ -173,6 +173,16 @@ def create_product(request):
             product  = form.save(commit=False)
             product.user = request.user 
             product.save()
+
+            if product.quantity and product.quantity > 0:
+                 StockMovement.objects.create(
+                      item=product,
+                      tipo=StockMovement.ENTRADA,
+                      quantidade=product.quantity if product.quantity else 0,
+                      quantidade_antes=0,
+                      user=request.user,
+                      observacao="Movimentação criada automaticamente ao cadastrar produto"
+                 )
             return redirect('homepage')
     else:     
         #when the user register subcategory, we already take 
@@ -412,7 +422,7 @@ def dowloand_report_pdf(request):
             
          ])
 
-    tabela = Table(data, colWidths=[70,90,50,60,80,80,100])
+    tabela = Table(data, colWidths=[70,160,50,60,80,80,100])
 
     tabela.setStyle(TableStyle([
     ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498DB")),

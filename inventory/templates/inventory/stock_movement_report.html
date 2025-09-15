@@ -45,6 +45,14 @@
                         <p><strong>Quantidade Atual em Estoque:</strong> {{ item_movimentado.item.quantity }}</p>
                         <p><strong>Quantidade anterior em Estoque:</strong> {{ item_movimentado.quantidade_antes }}</p>
                         <p><strong>Preço Unitário:</strong> R$ {{ item_movimentado.item.price|floatformat:2|intcomma }}</p>
+
+                        {% if item_movimentado.observacao %}
+                        <p class="observacao">💡 <strong> Observação:</strong>
+                             <em>{{ item_movimentado.observacao }}</em>
+                        </p>
+                    {% endif %}
+
+
                     </div>
                 </li>
             {% endfor %}
