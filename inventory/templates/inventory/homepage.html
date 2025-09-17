@@ -29,28 +29,35 @@
                  value="{{ nome|default:'' }}" class="search-input">
                  </label>
 
-
-        <label>
-            Preço mínimo:
-            <input 
-                type="text" 
-                name="preco_min" 
-                inputmode="decimal"
-                pattern="[0-9]+([,\.][0-9]{1,2})?" 
-                placeholder="Ex: 10.00"
-                value="{{ request.GET.preco_min }}">
-        </label>
-        
-        <label>
-            Preço máximo:
-            <input 
-                type="text" 
-                name="preco_max" 
-                inputmode="decimal"
-                pattern="[0-9]+([,\.][0-9]{1,2})?" 
-                placeholder="Ex: 50.00"
-                value="{{ request.GET.preco_max }}">
-        </label>
+                 <label>
+                    Preço mínimo:
+                    <div class="price-wrapper">
+                        <span class="price-prefix">R$</span>
+                        <input 
+                            type="text" 
+                            id="preco_min"
+                            name="preco_min" 
+                            inputmode="decimal"
+                            pattern="[0-9]+([,\.][0-9]{1,2})?" 
+                            placeholder="Ex: 10,00"
+                            value="{{ request.GET.preco_min }}">
+                    </div>
+                </label>
+                
+                <label>
+                    Preço máximo:
+                    <div class="price-wrapper">
+                        <span class="price-prefix">R$</span>
+                        <input 
+                            type="text" 
+                            id="preco_max"
+                            name="preco_max" 
+                            inputmode="decimal"
+                            pattern="[0-9]+([,\.][0-9]{1,2})?" 
+                            placeholder="Ex: 50,00"
+                            value="{{ request.GET.preco_max }}">
+                    </div>
+                </label>
         
         <label>
             Estoque mínimo:
@@ -120,5 +127,53 @@
             <p class="empty-message">Você ainda não cadastrou nenhum produto.</p>
         {% endif %}
     </div>
+
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    function aplicarMascara(input) {
+        if (!input) return;
+
+        input.addEventListener("input", function () {
+            let cursorPosition = input.selectionStart;
+
+            // Remove tudo que não for número
+            let value = input.value.replace(/\D/g, "");
+
+            if (!value) {
+                input.value = "";
+                return;
+            }
+
+            // Converte para número e divide por 100 para centavos
+            let number = parseFloat(value) / 100;
+
+            // Formata com separador de milhar
+            let formatted = number.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            input.value = formatted;
+
+            // Coloca o cursor no final do input
+            input.setSelectionRange(formatted.length, formatted.length);
+        });
+
+        // Ao enviar o form, remove formatação para backend
+        input.form.addEventListener("submit", function () {
+            let raw = input.value.replace(/\./g, "").replace(",", ".");
+            input.value = raw;
+        });
+    }
+
+    aplicarMascara(document.getElementById("preco_min"));
+    aplicarMascara(document.getElementById("preco_max"));
+});
+
+</script>
+
 
     {% endblock %}

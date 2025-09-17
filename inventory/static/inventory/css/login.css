@@ -1,97 +1,138 @@
-body {
+/* ===== RESET ===== */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: 'Inter', sans-serif;
     height: 100vh;
-    background: url('/media/logo.jpeg') no-repeat center center fixed;
-    background-size: contain;
-background-repeat: no-repeat;
-background-color: #000; /* fallback se imagem não preencher */
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background-attachment: fixed;
 }
 
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
 
-.login-container {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 2rem;
+/* ===== LOGO ===== */
+.logo-wrapper img {
+    width: 120px;
+    height: auto;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.8s ease forwards;
+}
+
+/* ===== CONTAINER ===== */
+.login-container {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 2.5rem;
     width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
+    max-width: 380px;
     color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.6s ease forwards;
 }
 
-
-.login-title {
+/* ===== HEADER ===== */
+.login-header {
     text-align: center;
-    font-size: 1.6rem;
     margin-bottom: 1.5rem;
-    color: #0e1116;
 }
 
-.login-form p {
+.login-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.login-header p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* ===== FORM ===== */
+.form-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1.2rem;
 }
 
-.login-form label {
-    display: block;
+.form-group label {
     font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: #333;
+    margin-bottom: 0.4rem;
 }
 
-.login-form input {
-    width: 100%;
-    padding: 0.65rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background-color: #fafafa;
-    transition: border-color 0.2s ease;
-}
-
-.login-form input:focus {
-    border-color: #3366cc;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(51, 102, 204, 0.1);
-}
-
-.login-button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #3366cc;
-    color: white;
-    font-weight: bold;
+.form-group input {
+    padding: 0.7rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.form-group input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+/* ===== BOTÃO ===== */
+.btn-login {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-button:hover {
-    background-color: #2851a3;
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
 }
 
-.register-link {
-    margin-top: 1.5rem;
+/* ===== LINKS EXTRA ===== */
+.extra-links {
     text-align: center;
-    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+.extra-links a {
+    font-size: 0.9rem;
+    color: #93c5fd;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.extra-links a:hover {
     color: #fff;
 }
 
-.register-link a {
-    color: #3366cc;
-    font-weight: 600;
-    text-decoration: none;
-    margin-left: 0.25rem;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
+/* ===== ANIMAÇÃO ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -19,6 +19,9 @@ class User(AbstractUser):
                                 ('admin','Admin'),
                                 ('user','User')],
                             default='user')
+    
+    USERNAME_FIELD = 'email'    #login will made by EMAIL
+    REQUIRED_FIELDS = ['username']  #obrigation fields
 
     def __str__(self):
         return self.username    #name on painel ADMIN
@@ -26,6 +29,8 @@ class User(AbstractUser):
 #Class for tbe Product
 class Category(models.Model):
     category = models.CharField(max_length=30, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # adiciona quem criou
+
     #plural of the words on django
     class Meta:
          verbose_name = "Category"
@@ -90,7 +95,7 @@ class StockMovement(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=TIPO_MOVIMENTO)
     quantidade = models.IntegerField()
-    data = models.DateTimeField(default=now_no_microseconds)  #not have the microsegunds
+    data = models.DateTimeField(default=timezone.now)  #not have the microsegunds
     observacao = models.TextField(blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quantidade_antes = models.PositiveIntegerField(null=True, blank=True)

@@ -20,8 +20,45 @@ from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet
 from django.db.models import F, Q
 from django.db.models import Sum, DecimalField, ExpressionWrapper
+from .forms import RegisterForm
+from django.http import HttpResponseForbidden
+from .decorators import admin_mode_required
+from .models import User
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
+
+@login_required
+def change_mode(request):
+    user = request.user  # o usuário logado
+    print("DEBUG: Usuário logado:", user.email, "Role atual:", user.role)
+
+    if request.method == "POST":
+        new_role = request.POST.get("role")
+        password = request.POST.get("password")
+        print("DEBUG: Tentando alterar para:", new_role)
+        print("DEBUG: Senha recebida:", password)
+
+        # Verifica a senha do próprio usuário
+        user_auth = authenticate(request, username=user.email, password=password)
+        print("DEBUG: Resultado do authenticate:", user_auth)
+
+        if user_auth is None:
+            messages.error(request, "Senha incorreta. Não foi possível alterar o modo.")
+            print("DEBUG: Senha incorreta")
+            return redirect("homepage")
+
+        # Aplica a mudança
+        user.role = new_role
+        user.save()
+        print("DEBUG: Role após salvar:", user.role)
+
+        update_session_auth_hash(request, user)
+        messages.success(request, f"Modo alterado para {user.get_role_display()}.")
+        return redirect("homepage")
+
+
+
 
 @login_required
 def homepage(request):  #after the urls.py direct to here, the function decide what to make. If shows or save what the user maked
@@ -82,14 +119,15 @@ def category_list(request):
     sort = request.GET.get('sort', 'name_asc')
 
     categories = (
-        Category.objects.prefetch_related("subcategories")
+        Category.objects.filter(user=request.user)  # pega só categorias do usuário
+        .prefetch_related("subcategories")
         .annotate(
             total_value=Sum(
                 F("item__price") * F("item__quantity"),
                 output_field=DecimalField(max_digits=12, decimal_places=2)
             )
         )
-    ) 
+    )
 
     if sort == 'name_asc':
          categories = categories.order_by('category')   #A-Z
@@ -132,20 +170,42 @@ def item_details(request, pk):
 
 def login_view(request):
      if request.method == 'POST':
-          form = LoginForm(data=request.POST)
+          form = LoginForm(request.POST)
           if form.is_valid():
                #auth and make login
                user = form.get_user()
                login(request, user)
+               messages.success(request, f"Bem Vindo, {user.username}")
                return redirect('homepage')
+          else:
+               messages.error(request, "Usuário ou senha inváldio   ")
      else:
             form = LoginForm()
      return render(request, 'inventory/User/login.html',{"form":form})
 
+def register_view(request):
+     if request.method == "POST":
+          form = RegisterForm(request.POST)
+          if form.is_valid():
+               user = form.save(commit=False)
+               user.username = user.email.split('@')[0]  # gera username automático
+               user.save()
+               messages.success(request, "Conta Criada com Sucesso. Agora faça login")
+               return redirect('login_view')
+          else:
+               messages.error(request, "Corrija os erros abaixo")
+     else:
+        form = RegisterForm()
+     return render(request, 'inventory/User/register.html', {"form": form})
+
+@login_required
 def logout_view(request):
      logout(request)
-     return redirect('login')
+     messages.info(request, "Você saiu da sua conta.")
+     return redirect('login_view')
 
+
+@admin_mode_required
 @login_required
 def create_product(request):
     #when the user register a new subcategory we get to the form
@@ -167,7 +227,7 @@ def create_product(request):
                 pass          
 
     if request.method == 'POST':        #check if was a POST
-        form = ItemForm(request.POST, request.FILES)   #IF yes, takes the parameter by the USER CREATE A FORM AND SAVE ON DB 
+        form = ItemForm(request.POST, request.FILES, user=request.user)   #IF yes, takes the parameter by the USER CREATE A FORM AND SAVE ON DB 
         if form.is_valid():
             #link product with user
             product  = form.save(commit=False)
@@ -186,10 +246,10 @@ def create_product(request):
             return redirect('homepage')
     else:     
         #when the user register subcategory, we already take 
-        form = ItemForm(initial=inital_data)               #create the form and if we have the other context give to the forms
+        form = ItemForm(initial=inital_data, user=request.user)               #create the form and if we have the other context give to the forms
 
     return render(request, 'inventory/Create_Product/create_product.html',{"form":form})   #send the object to the form
-
+@admin_mode_required
 @login_required
 def create_category(request):
     next_url = request.GET.get('next', '/')     #take the URL, beside next to save to redirect where the user was
@@ -197,7 +257,11 @@ def create_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
-            category =  form.save() 
+            category = form.save(commit=False)  # ← não salva ainda 
+            category.user = request.user
+            category.save()
+            messages.success(request, "Categoria criada com sucesso!")
+
             #redirect to the previous page
             redirect_url = f"{next_url}?category_id={category.id}"  #send the ID of the category
             return redirect(redirect_url)
@@ -205,7 +269,7 @@ def create_category(request):
             form = CategoryForm()
 
     return render(request, 'inventory/Create_Product/create_category.html', {"form":form})
-
+@admin_mode_required
 @login_required
 def create_subcategory(request):
     next_url = request.GET.get('next', '/')         #take the previous path
@@ -269,7 +333,7 @@ def minimun_stock(request):
   
                                                                                 
     return render(request, 'inventory/minimun_stock.html', {'produtos_com_estoque_baixo': produtos_com_estoque_baixo})
-
+@admin_mode_required
 @login_required
 def stock_movement_report(request):
     itens_movimentados = StockMovement.objects.filter(user=request.user).order_by('-data')  #from newest to the oldest
@@ -278,7 +342,7 @@ def stock_movement_report(request):
      #   print(f"Item {item_movimentado.item.name} - Quantidade {item_movimentado.quantidade} - FROM {item_movimentado.user.email} e {item_movimentado.images}")
     return render(request,'inventory/stock_movement_report.html', {'itens_movimentados': itens_movimentados, })
 
-
+@admin_mode_required
 @login_required
 def edit_product(request, pk):
 
@@ -300,7 +364,7 @@ def edit_product(request, pk):
      
      return render(request, 'inventory/edit_product.html', {'form': form, 'item': item})
 
-
+@admin_mode_required    
 @login_required
 def delete_product(request, pk):
     try:
@@ -397,7 +461,7 @@ def dowloand_report_pdf(request):
     elementos = []
     print(filtros_aplicados)
     #title of report
-    elementos.append(Paragraph(f"Relatório de Movimentações - {request.user.username}", styles['Heading1']))
+    elementos.append(Paragraph(f"Relatório de Movimentações - {request.user.email}", styles['Heading1']))
     
     if filtros_aplicados:
         elementos.append(Paragraph("Filtros Aplicados no Relatório"))

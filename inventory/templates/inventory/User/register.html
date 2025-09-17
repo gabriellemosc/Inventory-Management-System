@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - SmartStock</title>
+    <link rel="stylesheet" href="{% static 'inventory/css/login.css' %}">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="logo-wrapper">
+        <img src="/media/logo.jpeg" alt="SmartStock Logo">
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Crie sua conta 👋</h2>
+            <p>Cadastre-se para começar a gerenciar seus produtos</p>
+        </div>
+
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            <button type="submit" class="btn-login">Cadastrar</button>
+
+            <div class="extra-links">
+                <a href="{% url 'login_view' %}">Já tem conta? Faça login</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

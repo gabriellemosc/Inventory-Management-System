@@ -5,16 +5,89 @@ from .models import Category, SubCategory, Item
 from .models import User
 from .models import StockMovement
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
+
 
 #LOGIN FORM
-class LoginForm(AuthenticationForm):    
-        username = forms.CharField(label="Username", max_length=100)  
-        password = forms.CharField( label="Password", widget=forms.PasswordInput)
+class LoginForm(forms.Form):    
+        login = forms.CharField(
+            label="Usuário ou Email",
+                                    max_length=254,
+                                    widget=forms.TextInput(attrs={
+                                        "class":"form-control",
+                                        "placeholder": "Digite seu usuário",
+                                        "autofocus": True
+                                    })
+                                    )  
+        password = forms.CharField(
+                                    label="Senha",
+                                    strip=False,
+                                    widget=forms.PasswordInput(attrs={
+                                        "class": "form-control",
+                                        "placeholder": "Digite sua senha",
+                                    })
+                                    )
+        
+        def __init__(self, *args, **kwargs):
+            self.user = None
+            super().__init__(*args, **kwargs)
 
-        class Meta:
-            model = User
-            fields = ['username', 'password']
+       
+        def clean(self):
+            cleaned_data = super().clean()
+            login_input = cleaned_data.get("login")
+            password = cleaned_data.get("password")
 
+            if login_input and password:
+                # Busca usuário por username ou email
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+
+                user_obj = User.objects.filter(username=login_input).first() or User.objects.filter(email=login_input).first()
+
+                if not user_obj:
+                    raise forms.ValidationError("Usuário ou senha inválidos")
+
+                # Aqui passa o email ou username de acordo com USERNAME_FIELD
+                user = authenticate(
+                    username=user_obj.email if User.USERNAME_FIELD == 'email' else user_obj.username, 
+                    password=password
+                )
+
+                if not user:
+                    raise forms.ValidationError("Usuário ou senha inválidos")
+
+                self.user = user
+
+            return cleaned_data
+
+        def get_user(self):
+            return self.user
+    
+
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(
+            label="Email",
+            required=True,
+            widget=forms.EmailInput(attrs={
+                            'class': 'form-control',
+                            'placeholder': "Digite seu email"
+            })
+    )
+    password1 = forms.CharField(
+            label="Senha",
+            widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': "Digite sua senha"})
+    ) 
+    password2 = forms.CharField(
+        label="Confirme sua Senha",
+        widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Repita sua Senha'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2']
 
 class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
     class Meta: #model to use to buld the form
@@ -37,6 +110,15 @@ class ItemForm(forms.ModelForm):    #class from django, create a form A DB model
                 'id': 'id_price'
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+            user = kwargs.pop('user', None)
+            super().__init__(*args, **kwargs)
+
+            if user:
+                self.fields['category'].queryset = Category.objects.filter(user=user)
+                self.fields['subcategory'].queryset = SubCategory.objects.filter(category__user=user)
+
 
 #VALIDATIONS
     def clean_name(self):

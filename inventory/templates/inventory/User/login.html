@@ -9,17 +9,44 @@
     <link rel="stylesheet" href="{% static 'inventory/css/login.css' %}">
 </head>
 <body>
-    <div class="login-container">
-        <h2 class="login-title">Acesse sua conta</h2>
-        <form method="POST" class="login-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="login-button">Entrar</button>
-        </form>
-        <div class="register-link">
-            <span>Não tenho conta —</span>
-            <a href="">Criar</a>
+
+    <div class="page-wrapper">
+        <!-- Logo em destaque no topo -->
+        <div class="logo-wrapper">
+            <img src="/media/logo.jpeg" alt="SmartStock Logo">
+        </div>
+
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Bem-vindo de volta 👋</h2>
+                <p>Faça login para acessar o seu painel</p>
+            </div>
+
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+            
+                <div class="form-group">
+                    {{ form.login.label_tag }}
+                    {{ form.login }}
+                    {{ form.login.errors }}
+                </div>
+            
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+            
+                <button type="submit" class="btn-login">Entrar</button>
+            
+            </form>
+
+            <div class="extra-links">
+                <a href="{% url 'register_view' %}">Criar Conta</a>
+            </div>
         </div>
     </div>
+
 </body>
 </html>

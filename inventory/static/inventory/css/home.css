@@ -192,3 +192,12 @@ body {
 }
 
 
+.price-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.price-prefix {
+    margin-right: 5px;
+    font-weight: bold;
+}
