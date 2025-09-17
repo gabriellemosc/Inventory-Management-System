@@ -136,3 +136,16 @@ body {
         transform: translateY(0);
     }
 }
+
+.label-wrapper {
+    display: flex;
+    justify-content: space-between; /* label à esquerda, olhinho à direita */
+    align-items: center;
+    margin-bottom: 0.4rem; /* mantém espaço entre label e input */
+}
+
+.password-container .toggle-password {
+    cursor: pointer;
+    user-select: none;
+    font-size: 18px;
+}

@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 #LOGIN FORM
 class LoginForm(forms.Form):    
         login = forms.CharField(
-            label="Usuário ou Email",
+            label="Email",
                                     max_length=254,
                                     widget=forms.TextInput(attrs={
                                         "class":"form-control",
