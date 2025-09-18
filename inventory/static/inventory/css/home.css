@@ -201,3 +201,48 @@ body {
     margin-right: 5px;
     font-weight: bold;
 }
+
+.product-image {
+    width: 100%;
+    height: 180px;         /* altura fixa */
+    object-fit: cover;     /* corta a imagem para caber */
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background-color: #f2f2f2; /* cor de fundo caso não tenha imagem */
+    display: block;
+}
+
+
+.product-tags {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 20px;
+    color: white;
+    white-space: nowrap;
+}
+
+.tag.category {
+    background-color: #1a73e8; /* azul */
+}
+
+.tag.subcategory {
+    background-color: #f59e0b; /* laranja */
+}
+
+.product-price {
+    white-space: nowrap !important;  /* impede quebra de linha */
+    font-size: 1.2rem !important;
+    color: #000000 !important; /* verde */
+
+}
+
+

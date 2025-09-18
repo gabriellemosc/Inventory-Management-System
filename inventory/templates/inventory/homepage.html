@@ -14,6 +14,7 @@
 <div class="homepage-wrapper">
 
     <h1>Bem-vindo ao SmartStock</h1>
+    
     <p>Gerencie seus produtos com facilidade!</p>
 
     <h2>Seus Produtos Cadastrados</h2>
@@ -114,11 +115,23 @@
                 {% for item in itens %}
                 <li>
                     <a href="{% url 'item_details' item.pk %}">
-                        <img src="{{ item.images.url }}" alt="Imagem do produto" width="200">
-                
-                        <strong>{{ item.name }}</strong>
-                        Preço: R$ {{ item.price|floatformat:2|intcomma }} <br>
-                        Estoque: {{ item.quantity }}
+                        <img src="{{ item.images.url }}" alt="Imagem do produto"  class="product-image">
+                    
+                        <div class="product-info">
+                            <h4 class="product-name">{{ item.name }}</h4>
+                            
+                            <p class="product-price">💰 R$ {{ item.price|floatformat:2|intcomma }}</p>
+                            <p class="product-stock">📦 Estoque: {{ item.quantity }}</p>
+                        
+                            <div class="product-tags">
+                                {% if item.category %}
+                                    <span class="tag category">{{ item.category }}</span>
+                                {% endif %}
+                                {% if item.subcategory %}
+                                    <span class="tag subcategory">{{ item.subcategory }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
                     </a>
                 </li>
                 {% endfor %}
