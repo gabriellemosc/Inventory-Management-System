@@ -28,13 +28,15 @@ class User(AbstractUser):
 
 #Class for tbe Product
 class Category(models.Model):
-    category = models.CharField(max_length=30, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # adiciona quem criou
+    category = models.CharField(max_length=30)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="categories")  # adiciona quem criou
 
     #plural of the words on django
     class Meta:
          verbose_name = "Category"
          verbose_name_plural = "Categories"
+         unique_together = ("user", "category")  
+
 
     def __str__(self):
          return str(self.category)
@@ -48,6 +50,8 @@ class SubCategory(models.Model):
         class Meta:
          verbose_name = "Sub Category"
          verbose_name_plural = "Sub Categories"
+         unique_together = ("category", "subcategory")  
+
              
         def __str__(self):
              return f"{self.subcategory}"

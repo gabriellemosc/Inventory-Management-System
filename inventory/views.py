@@ -269,6 +269,7 @@ def create_category(request):
             form = CategoryForm()
 
     return render(request, 'inventory/Create_Product/create_category.html', {"form":form})
+
 @admin_mode_required
 @login_required
 def create_subcategory(request):
@@ -277,15 +278,17 @@ def create_subcategory(request):
     category = None
 
     if category_id:
-            try: 
-                 category = Category.objects.get(id=category_id)
+            try:    
+                 category = Category.objects.get(id=category_id, user=request.user)
             except Category.DoesNotExist:
                  category = None
 
     if request.method == 'POST':
         form = SubCategoryForm(request.POST)
         if form.is_valid():
-            subcategory = form.save()
+            subcategory = form.save(commit=False)
+            subcategory.user = request.user
+            subcategory.save()
             #redirect previous page with the context of the category and subcategory
             redirect_url = f"{next_url}?category_id={subcategory.category.id}&subcategory_id={subcategory.id}" #send to the context
             return redirect(redirect_url)
