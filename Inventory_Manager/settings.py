@@ -24,11 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t8x#9q*!!o$-e=1!h*vkz%i@&x!7q8_kt3b)zlvjux%yku55tp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "TRUE") == "TRUE"
 
-ALLOWED_HOSTS = ['*']
-
-
+if DEBUG:
+    #localhost DEV
+    ALLOWED_HOSTS = [
+        "127.0.0.1",
+        "localhost",
+        "inventory-management-system-zgac.onrender.com",
+    ]
+else:
+     # produção
+    ALLOWED_HOSTS = ["inventory-management-system-zgac.onrender.com"]
+    CSRF_TRUSTED_ORIGINS = ["https://inventory-management-system-zgac.onrender.com"]
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+        
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,8 +69,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://inventory-management-system-zgac.onrender.com"
 ]
 # segurança extra para produção (só se estiver em HTTPS)
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 
 ROOT_URLCONF = 'Inventory_Manager.urls'
