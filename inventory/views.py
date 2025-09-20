@@ -346,13 +346,13 @@ def stock_movement_report(request):
     return render(request,'inventory/stock_movement_report.html', {'itens_movimentados': itens_movimentados, })
 
 @admin_mode_required
-@login_required
+@login_required 
 def edit_product(request, pk):
 
      item = get_object_or_404(Item, pk=pk, user=request.user) 
 
      if request.method == 'POST':
-        form = ItemEditForm(request.POST, request.FILES, instance=item)
+        form = ItemEditForm(request.POST, request.FILES, instance=item, user=request.user)
         if form.is_valid():
              form.save()
              messages.success(request, "Produto Atualizado com Sucesso!")
@@ -361,7 +361,7 @@ def edit_product(request, pk):
              messages.error(request, "Erro ao atualizar o produto. Verifique os campos.")
              print(form.errors)
      else:
-        form = ItemEditForm(instance=item)
+        form = ItemEditForm(instance=item, user=request.user)
 
   
      

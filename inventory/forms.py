@@ -247,8 +247,13 @@ class ItemEditForm(forms.ModelForm):
         fields = ['category', 'subcategory', 'name', 'price', 'description', 'minimum_stock', 'images']
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None) #pega USEr
         super().__init__(*args, **kwargs)
         self.fields['images'].required = False 
+
+        if user:
+            self.fields['category'].queryset = Category.objects.filter(user=user)
+            self.fields['subcategory'].queryset = SubCategory.objects.filter(category__user=user)
 
 
     def clean_name(self):
