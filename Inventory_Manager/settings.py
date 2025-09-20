@@ -53,6 +53,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#meu dominio
+CSRF_TRUSTED_ORIGINS = [
+    "https://inventory-management-system-zgac.onrender.com"
+]
+# segurança extra para produção (só se estiver em HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
 ROOT_URLCONF = 'Inventory_Manager.urls'
 
 TEMPLATES = [
