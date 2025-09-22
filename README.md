@@ -15,6 +15,9 @@
 - ``SQLite``
 - ``OOP``
 
+![descrição da imagem](https://github.com/gabriellemosc/Inventory-Management-System/blob/main/Screen_Photos/Screenshot%20from%202025-09-22%2011-34-59.png
+)
+
   ## 🚀 About
 
 ***Inventory Management*** System is a Django-based project designed to efficiently manage and organize product inventory. Created for learning and practice purposes, it implements essential features of an inventory system, such as product registration, quantity control, categories, CRUD operations, and stock movements. The project focuses on modularity and flexibility, allowing for future expansions and easy testing.
