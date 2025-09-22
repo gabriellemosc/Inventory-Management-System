@@ -1,58 +1,87 @@
 <h1 align="center"> SmartStock </h1>
 
 
-![descrição da imagem](https://github.com/gabriellemosc/Netflix_Project/blob/main/Capturas%20de%20tela/Captura%20de%20tela%20de%202024-09-23%2009-46-30.png)
+![descrição da imagem](https://github.com/gabriellemosc/Inventory-Management-System/blob/main/Screen_Photos/Screenshot%20from%202025-09-22%2009-36-56.png)
 
 
 
 ## ✔️ Techniques and technologies used
 
-- ``Python 3``
+- ``Python 3.12.3``
+- ``JavaScript``
 - ``Django``
 - ``HTML``
+- ``CSS``
 - ``SQLite``
 - ``OOP``
 
   ## 🚀 About
 
-***Fake Netflix*** is a Django-based project designed to simulate the core features of a streaming platform. Created for learning and practice purposes, it implements key elements of a streaming service, such as movie organization, categories, and user management. The project is built with a focus on modularity and flexibility, allowing for easy future expansions and testing.
-- **Content Organization**: Enables structuring of movies into categories and genres, simulating the browsing experience of a streaming catalog.- 
-- **Scalability**: The modular design allows for easy integration of additional features, such as ratings and personalized movie lists.
-- **Maintainability**: The code is structured to support easy maintenance and adaptation, facilitating new features and improvements.
+***Inventory Management*** System is a Django-based project designed to efficiently manage and organize product inventory. Created for learning and practice purposes, it implements essential features of an inventory system, such as product registration, quantity control, categories, CRUD operations, and stock movements. The project focuses on modularity and flexibility, allowing for future expansions and easy testing.
+
+- Product Organization: Enables structuring products into categories and managing essential information, simulating a real inventory management system.
+- User Management: Supports different access levels with Admin and User modes, ensuring control over sensitive operations and system security.
+- Filtering and Searching: Allows filtering products by price, category, quantity, or other relevant information, facilitating navigation and decision-making.
+- Stock Movements & Reports: Tracks product inflows and outflows, with the option to download detailed reports on inventory and stock movements.
+- Scalability: The modular design allows easy integration of additional features, such as low-stock alerts or new types of reports.
+- Maintainability: The code is organized to support easy maintenance and adaptation, making it simple to implement new features and improvements.
 
 ## 🛠️ Getting Started
 1. **Clone the repository**  
   - Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/gabriellemosc/Netflix_Project.git
+    git clone https://github.com/gabriellemosc/Inventory-Management-System.git
+    cd Inventory-Management-System
    ```
 2. **Create and Activate the Virtual Environment**  
 - To keep dependencies organized, create a Python virtual environment and activate it:
     ```bash
+
+    # Linux / macOS
   python3 -m venv venv
-  source venv/bin/activate  # No Windows, use 'venv\Scripts\activate'
+  source venv/bin/activate
+  
+  # Windows (PowerShell)
+  python -m venv venv
+  venv\Scripts\activate
+
   ```
-3. **Configuração do Banco de Dados**  
+
+3. Install Dependencies
+- After activating the virtual environment, install the required Python packages:
+```bash
+pip install -r requirements.txt
+```
+
+4. **Config the DataBase and SuperUser**  
 - a) Modify the Database Settings in settings.py
-Open the settings.py file and change the database settings for your own environment. By default, Django uses SQLite, but you can switch to another database, such as PostgreSQL or MySQL, if you prefer.:
-  Exemplo para SQLite (sem alterações):
-  ```python
+    Modify the `settings.py` file to adjust the database settings for your environment.
+    By default, Django uses SQLite, but you can switch to PostgreSQL or MySQL if preferred.
+
+    Example for SQLite (default):
+  
+    ```python
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-  }
+      ```
+- b) ***Create the Database and Migrations***
+      After configuring the database, create the necessary tables with the following commands:
+  
+  ```bash
+  
+      python manage.py makemigrations
+      python manage.py migrate
+
   ```
-- b) Create the Database and Migrations
-    After configuring the database, create the necessary tables with the following commands:
-    ```bash
-    python manage.py makemigrations
-    python manage.py migrate
-    ```
-4. **Create a Django Superuser**
-- To access the Django admin panel, you will need a superuser:
+
+  
+- c) **Create a Django Superuser**
+    To access the Django admin panel, you will need a superuser:
     ```bash
       python manage.py createsuperuser
       ```
@@ -68,11 +97,11 @@ Follow the instructions to set the username, email and password.
 
 ## 📸 Project Screenshots
 
-Here are some screenshots of the **Fake Netflix** project, showing the main features and user interface.
+Here are some screenshots of the **SmartStock** project, showing the main features and user interface.
 
-| Homepage | Movie Details Page | LoginPage |
+| Movement Stock Report | Minimum Stock Alert | Category List |
 | --- | --- | --- |
-| ![Homepage](https://github.com/gabriellemosc/Netflix_Project/blob/main/Capturas%20de%20tela/Captura%20de%20tela%20de%202024-09-23%2009-46-02.png) | ![Movie Details Page](https://github.com/gabriellemosc/Netflix_Project/blob/main/Capturas%20de%20tela/Captura%20de%20tela%20de%202024-09-23%2009-46-11.png) | ![LoginPage](https://github.com/gabriellemosc/Netflix_Project/blob/main/Capturas%20de%20tela/Captura%20de%20tela%20de%202024-09-23%2009-48-21.png) |
+| ![Movement Stock Report](https://github.com/gabriellemosc/Inventory-Management-System/blob/main/Screen_Photos/Screenshot%20from%202025-09-22%2010-37-28.png) | ![Movie Details Page](https://github.com/gabriellemosc/Inventory-Management-System/blob/main/Screen_Photos/Screenshot%20from%202025-09-22%2010-36-02.png) | ![Category_List](https://github.com/gabriellemosc/Inventory-Management-System/blob/main/Screen_Photos/Screenshot%20from%202025-09-22%2010-40-09.png) |
 
 
 
