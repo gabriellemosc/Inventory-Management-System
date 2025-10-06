@@ -28,6 +28,8 @@
             {% csrf_token %}
             {{ form.non_field_errors }}
 
+
+
             <div class="form-group">
                 {{ form.email.label_tag }}
                 {{ form.email }}
@@ -46,12 +48,35 @@
                 {{ form.password2.errors }}
             </div>
 
+
+    <!-- Checkbox de consentimento LGPD -->
+    <div class="form-group lgpd-consent">
+        <input type="checkbox" id="lgpd" name="lgpd" required>
+        <label for="lgpd">
+            Li e concordo com os 
+            <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank">
+                Termos da Lei Geral de Proteção de Dados (LGPD)
+            </a>.
+        </label>
+    </div>
+
+
             <button type="submit" class="btn-login">Cadastrar</button>
 
             <div class="extra-links">
                 <a href="{% url 'login_view' %}">Já tem conta? Faça login</a>
             </div>
         </form>
+
+        <script>
+            function validateLGPD(){
+                const checkbox = document.getElementById('lgpd');
+
+                if(!checkbox.checked){
+                    alert("Você precisa concordar com os Termos da LGPD antes de continuar")
+                }
+            }
+        </script>
     </div>
 </div>
 </body>

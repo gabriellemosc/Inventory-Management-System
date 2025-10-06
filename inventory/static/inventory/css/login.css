@@ -416,3 +416,26 @@ body {
         font-size: 1.5rem;
     }
 }   
+
+
+.lgpd-consent {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .lgpd-consent input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+  }
+  
+  .lgpd-consent a {
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .lgpd-consent a:hover {
+    text-decoration: underline;
+  }
+  
